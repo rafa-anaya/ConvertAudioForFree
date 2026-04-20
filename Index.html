@@ -7,6 +7,8 @@
     <meta name="description" data-i18n="meta_desc" content="Convierte y recorta audios gratis, sin límites y 100% privado en tu navegador.">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/wavesurfer.js@7.0.0/dist/wavesurfer.min.js"></script>
+    <script src="https://unpkg.com/wavesurfer.js@7.0.0/dist/plugins/regions.min.js"></script>
 </head>
 <body>
     <header>
@@ -21,41 +23,45 @@
         <span class="ad-label">Advertisement</span>
         </div>
 
-    <main id="app-container">
-        <h1 data-i18n="app_title">Convierte y Recorta tu Audio</h1>
-        <p class="subtitle" data-i18n="app_subtitle">100% Privado. El archivo nunca sale de tu dispositivo.</p>
+    <main id="app-container" class="layout-grid">
+        <section class="content-area">
+            <h1 data-i18n="app_title">Convierte y Recorta tu Audio</h1>
+            <p class="subtitle" data-i18n="app_subtitle">100% Privado. El archivo nunca sale de tu dispositivo.</p>
 
-        <div class="tool-box">
-            <div id="drop-zone" class="drop-zone">
-                <p data-i18n="drop_text">Arrastra tu audio aquí o haz clic para subir</p>
-                <input type="file" id="audio-input" accept="audio/*" multiple hidden>
-            </div>
-
-            <div id="controls" class="controls hidden">
-                <div class="control-group">
-                    <label data-i18n="lbl_format">Formato de Salida:</label>
-                    <select id="output-format">
-                        <option value="mp3">MP3</option>
-                        <option value="wav">WAV</option>
-                        <option value="ogg">OGG</option>
-                        <option value="aac">AAC</option>
-                    </select>
+            <div class="tool-box">
+                <div id="drop-zone" class="drop-zone">
+                    <p data-i18n="drop_text">Arrastra tus audios aquí o haz clic para subir</p>
+                    <input type="file" id="audio-input" accept="audio/*" multiple hidden>
                 </div>
                 
-                <div class="time-controls">
-                    <div class="control-group">
-                        <label data-i18n="lbl_start">Inicio (segundos):</label>
-                        <input type="number" id="time-start" min="0" step="0.1" value="0">
-                    </div>
-                    <div class="control-group">
-                        <label data-i18n="lbl_end">Fin (segundos):</label>
-                        <input type="number" id="time-end" min="0" step="0.1">
+                <div id="global-controls" class="controls hidden" style="margin-bottom: 2rem; padding: 1rem; background: #EEF2FF; border-radius: 8px;">
+                     <div class="control-group">
+                        <label data-i18n="lbl_format" style="margin-bottom: 0.5rem; display:block;">Formato de Salida Global:</label>
+                        <select id="output-format">
+                            <option value="mp3">MP3</option>
+                            <option value="wav">WAV</option>
+                            <option value="ogg">OGG</option>
+                            <option value="aac">AAC</option>
+                        </select>
                     </div>
                 </div>
 
-                <button id="process-btn" class="cta-button" data-i18n="btn_process">Convertir y Descargar</button>
+                <!-- Lista de archivos (Acordeón) -->
+                <div id="file-list" class="file-list"></div>
+
+                <div id="process-controls" class="controls hidden">
+                    <button id="process-btn" class="cta-button" data-i18n="btn_process">Convertir y Descargar Todo</button>
+                </div>
             </div>
-        </div>
+        </section>
+        
+        <aside class="sidebar">
+            <div class="sticky-ad">
+                <div class="ad-zone sidebar-ad">
+                    <span class="ad-label">Advertisement</span>
+                </div>
+            </div>
+        </aside>
     </main>
 
     <div id="processing-modal" class="modal hidden">
