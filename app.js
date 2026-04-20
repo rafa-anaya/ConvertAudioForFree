@@ -164,7 +164,10 @@ function renderFileList() {
                 <div class="file-info">
                     <strong>${item.file.name}</strong> <small>(${sizeMB} MB)</small>
                 </div>
-                <button class="btn-edit" onclick="event.stopPropagation(); toggleAccordion('${item.id}')">⚙️ Editar</button>
+                <div class="file-actions">
+                    <button class="btn-edit" onclick="event.stopPropagation(); toggleAccordion('${item.id}')">⚙️ Editar</button>
+                    <button class="btn-delete" onclick="event.stopPropagation(); removeAudio('${item.id}', event)">🗑️ Eliminar</button>
+                </div>
             </div>
             <div class="file-content" id="content_${item.id}">
                 <div class="editor-box">
@@ -215,6 +218,35 @@ function renderFileList() {
 
     dropZone.querySelector('p').textContent = `Audios cargados: ${filesState.length}`;
 }
+
+// Función para remover un audio específico
+window.removeAudio = function(id, event) {
+    if (event) event.stopPropagation();
+
+    // Encontrar y destruir recursos de Wavesurfer / noUiSlider
+    const item = filesState.find(f => f.id === id);
+    if (item) {
+        if (item.wsInstance) {
+            item.wsInstance.destroy();
+            item.wsInstance = null;
+        }
+        const sliderStart = document.getElementById(`slider_start_${id}`);
+        const sliderEnd = document.getElementById(`slider_end_${id}`);
+        if (sliderStart && sliderStart.noUiSlider) sliderStart.noUiSlider.destroy();
+        if (sliderEnd && sliderEnd.noUiSlider) sliderEnd.noUiSlider.destroy();
+    }
+
+    // Remover del estado global
+    filesState = filesState.filter(f => f.id !== id);
+
+    // Re-render
+    renderFileList();
+
+    // Si ya no hay audios, restaurar el texto default del dropzone
+    if (filesState.length === 0) {
+        dropZone.querySelector('p').textContent = 'Arrastra tus audios aquí o haz clic para subir';
+    }
+};
 
 // Destruir todas las instancias de wavesurfer excepto la actual (RAM saving)
 function destroyOtherWaveSurfers(keepId) {

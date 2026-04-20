@@ -63,7 +63,10 @@ header { display: flex; justify-content: space-between; padding: 1rem 5%; backgr
 .file-item { border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 1rem; overflow: hidden; }
 .file-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #fff; cursor: pointer; }
 .file-header:hover { background: #f9fafb; }
+.file-actions { display: flex; gap: 0.5rem; align-items: center; }
 .btn-edit { background: var(--primary-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; }
+.btn-delete { background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; }
+.btn-delete:hover { background: #dc2626; }
 .file-content { display: none; padding: 1rem; border-top: 1px solid var(--border-color); background: #fafafa; }
 .file-item.active .file-content { display: block; }
 
