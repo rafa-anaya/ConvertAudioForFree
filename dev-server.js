@@ -39,10 +39,9 @@ const server = http.createServer((req, res) => {
                 res.end(`Error de servidor: ${error.code}`);
             }
         } else {
-            // CABECERAS CRÍTICAS PARA FFMPEG.WASM (SharedArrayBuffer)
             res.writeHead(200, {
                 'Content-Type': contentType,
-                'Cross-Origin-Embedder-Policy': 'require-corp',
+                'Cross-Origin-Embedder-Policy': 'credentialless',
                 'Cross-Origin-Opener-Policy': 'same-origin'
             });
             res.end(content, 'utf-8');
