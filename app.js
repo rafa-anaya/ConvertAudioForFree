@@ -311,14 +311,24 @@ function initWaveSurfer(item) {
         valStartSpan.textContent = nStart.toFixed(1) + 's';
         valEndSpan.textContent = nEnd.toFixed(1) + 's';
 
-        wsRegions.getRegions().forEach(r => r.remove());
-        wsRegions.addRegion({
-            start: item.start,
-            end: item.end,
-            color: 'rgba(255, 158, 100, 0.2)',
-            drag: true,
-            resize: true
-        });
+        // Usar setOptions evita borrar la estructura DOM, manteniendo el drag del usuario táctil sano.
+        const regions = wsRegions.getRegions();
+        if (regions.length > 0) {
+             // Actualizar existente
+             regions[0].setOptions({
+                 start: item.start,
+                 end: item.end
+             });
+        } else {
+            // Crear si no existía (ej. renderizado inicial)
+            wsRegions.addRegion({
+                start: item.start,
+                end: item.end,
+                color: 'rgba(255, 158, 100, 0.2)',
+                drag: true,
+                resize: true
+            });
+        }
 
         updatingFromSlider = false;
     };
@@ -360,6 +370,14 @@ function initWaveSurfer(item) {
         syncRegionFromSliders();
     });
 
+    // ── Evento de Límite (Loop Limit Backup) ──
+    // Fuerza pausa cuando llegue al fin visual
+    item.wsInstance.on('audioprocess', (currentTime) => {
+         if (item.wsInstance.isPlaying() && currentTime >= item.end) {
+              item.wsInstance.pause();
+         }
+    });
+
     // ── Evento: Región arrastrada → actualizar sliders ──
     wsRegions.on('region-updated', (region) => {
         if (updatingFromSlider) return;
@@ -395,6 +413,7 @@ function initWaveSurfer(item) {
         } else {
             const activeRegion = wsRegions.getRegions()[0];
             if (activeRegion) {
+                // play() inicializará el audio desde activeRegion.start
                 activeRegion.play();
                 btnPlay.textContent = '⏸ Pausar';
             }
