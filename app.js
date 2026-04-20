@@ -113,7 +113,11 @@ audioInput.addEventListener('change', (e) => {
 });
 
 function handleFiles(files) {
-    const newFiles = Array.from(files).filter(f => f.type.startsWith('audio/'));
+    const newFiles = Array.from(files).filter(f => 
+        f.type.startsWith('audio/') || 
+        f.type.startsWith('video/') || 
+        f.name.match(/\.(mp4|mkv|avi|webm)$/i)
+    );
     if (newFiles.length === 0) return;
 
     // Reset general if first upload
