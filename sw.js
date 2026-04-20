@@ -14,15 +14,24 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+    // Solo procesar peticiones GET con esquemas http/https soportados
+    if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) {
+        return;
+    }
+
     event.respondWith(
         caches.match(event.request).then((response) => {
             // Retorna cache si existe, si no, hace la petición a la red
             return response || fetch(event.request).then((fetchRes) => {
-                // Si es el binario WebAssembly, lo guardamos dinámicamente
-                return caches.open(CACHE_NAME).then((cache) => {
-                    cache.put(event.request.url, fetchRes.clone());
+                // Guardar en cache sólo si es una respuesta válida
+                if (!fetchRes || fetchRes.status !== 200 || fetchRes.type !== 'basic' && fetchRes.type !== 'cors') {
                     return fetchRes;
+                }
+                const responseToCache = fetchRes.clone();
+                caches.open(CACHE_NAME).then((cache) => {
+                    cache.put(event.request, responseToCache);
                 });
+                return fetchRes;
             });
         })
     );

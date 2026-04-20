@@ -95,7 +95,7 @@ document.getElementById('lang-selector').addEventListener('change', (e) => {
 const dropZone = document.getElementById('drop-zone');
 const audioInput = document.getElementById('audio-input');
 const controlsBox = document.getElementById('controls');
-let currentFile = null;
+let currentFiles = [];
 
 dropZone.addEventListener('click', () => audioInput.click());
 dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = 'var(--primary-hover)'; });
@@ -103,34 +103,40 @@ dropZone.addEventListener('dragleave', () => dropZone.style.borderColor = 'var(-
 dropZone.addEventListener('drop', (e) => {
     e.preventDefault();
     dropZone.style.borderColor = 'var(--primary-color)';
-    if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+    if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
 });
 audioInput.addEventListener('change', (e) => {
-    if (e.target.files.length) handleFile(e.target.files[0]);
+    if (e.target.files.length) handleFiles(e.target.files);
 });
 
-function handleFile(file) {
-    currentFile = file;
-    dropZone.querySelector('p').textContent = `Archivo seleccionado: ${file.name}`;
+function handleFiles(files) {
+    currentFiles = Array.from(files).slice(0, 5); // Limit to 5 max
+    dropZone.querySelector('p').textContent = `Archivos seleccionados: ${currentFiles.length} (Max 5)`;
     controlsBox.classList.remove('hidden');
     
-    // Leer duración (Básico vía Web Audio API) para rellenar el input de "Fin"
-    const audio = new Audio(URL.createObjectURL(file));
-    audio.onloadedmetadata = () => {
-        document.getElementById('time-end').value = audio.duration.toFixed(1);
-    };
+    if (currentFiles.length === 1) {
+        const audio = new Audio(URL.createObjectURL(currentFiles[0]));
+        audio.onloadedmetadata = () => {
+            document.getElementById('time-end').value = audio.duration.toFixed(1);
+        };
+    } else {
+        document.getElementById('time-start').value = "";
+        document.getElementById('time-end').value = "";
+    }
 }
 
 // ==========================================
 // 3. MOTOR FFMPEG.WASM (Procesamiento)
 // ==========================================
 const { createFFmpeg, fetchFile } = FFmpeg;
-// Nota de Arquitectura: Usamos la configuración por defecto. 
-// WebAssembly cargará en el navegador del usuario.
-const ffmpeg = createFFmpeg({ log: true });
+// Nota de Arquitectura: Usamos load explicito de jSDelivr para saltar restriccion unpkg CORP
+const ffmpeg = createFFmpeg({ 
+    log: true,
+    corePath: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js'
+});
 
 document.getElementById('process-btn').addEventListener('click', async () => {
-    if (!currentFile) return;
+    if (!currentFiles || currentFiles.length === 0) return;
 
     const modal = document.getElementById('processing-modal');
     modal.classList.remove('hidden');
@@ -140,38 +146,53 @@ document.getElementById('process-btn').addEventListener('click', async () => {
             await ffmpeg.load();
         }
 
-        const inputName = 'input_audio';
         const format = document.getElementById('output-format').value;
-        const outputName = `output.${format}`;
         const start = document.getElementById('time-start').value;
         const end = document.getElementById('time-end').value;
 
-        // Escribir archivo en el sistema de archivos virtual de FFmpeg
-        ffmpeg.FS('writeFile', inputName, await fetchFile(currentFile));
+        for (let i = 0; i < currentFiles.length; i++) {
+            const file = currentFiles[i];
+            const modalText = document.querySelector('#processing-modal h2');
+            if (modalText) {
+                modalText.textContent = currentLang === 'es' ? 
+                    `Procesando ${i + 1} de ${currentFiles.length}...` : 
+                    `Processing ${i + 1} of ${currentFiles.length}...`;
+            }
 
-        // Ejecutar comando FFmpeg (Client-side puro)
-        await ffmpeg.run('-i', inputName, '-ss', start, '-to', end, outputName);
+            const inputName = `input_${i}.audio`;
+            const outputName = `output_${i}.${format}`;
 
-        // Leer resultado
-        const data = ffmpeg.FS('readFile', outputName);
-        
-        // Crear descarga
-        const blob = new Blob([data.buffer], { type: `audio/${format}` });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `recorte_${new Date().getTime()}.${format}`;
-        a.click();
-        
-        // Limpiar memoria
-        ffmpeg.FS('unlink', inputName);
-        ffmpeg.FS('unlink', outputName);
+            ffmpeg.FS('writeFile', inputName, await fetchFile(file));
+
+            const args = ['-i', inputName];
+            if (start && parseFloat(start) > 0) args.push('-ss', start);
+            if (end && parseFloat(end) > 0) args.push('-to', end);
+            args.push(outputName);
+
+            await ffmpeg.run(...args);
+
+            const data = ffmpeg.FS('readFile', outputName);
+            
+            const blob = new Blob([data.buffer], { type: `audio/${format}` });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || "audio";
+            a.download = `${originalName}.${format}`;
+            a.click();
+            
+            ffmpeg.FS('unlink', inputName);
+            ffmpeg.FS('unlink', outputName);
+        }
 
     } catch (error) {
         console.error("Error en el procesamiento:", error);
-        alert(currentLang === 'es' ? "Ocurrió un error. Intenta con un archivo más pequeño." : "An error occurred. Try a smaller file.");
+        alert(currentLang === 'es' ? "Ocurrió un error. Verifica el archivo o recarga." : "An error occurred. Check the file or reload.");
     } finally {
         modal.classList.add('hidden');
+        if (document.querySelector('#processing-modal h2')) {
+            applyLanguage(); // Reset modal text via i18n
+        }
     }
 });
 
