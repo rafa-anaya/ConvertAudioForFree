@@ -142,10 +142,10 @@ function handleFiles(files) {
 }
 
 function renderFileList() {
-    fileListContainer.innerHTML = ''; // Limpiar lista
+    fileListContainer.innerHTML = '';
     
     filesState.forEach((item, index) => {
-        // Anuncio In-Feed cada 3 elementos (Estrategia de Monetización)
+        // Anuncio In-Feed cada 3 elementos
         if (index > 0 && index % 3 === 0) {
             const adDiv = document.createElement('div');
             adDiv.className = 'in-feed-ad';
@@ -172,18 +172,24 @@ function renderFileList() {
                     
                     <div id="waveform_${item.id}" class="waveform-ui"></div>
                     
-                    <div class="editor-controls-row">
-                        <div class="editor-input-wrapper">
-                            <label>Inicio (segundos)</label>
-                            <input type="number" id="start_${item.id}" step="0.1" value="${item.start}">
+                    <div class="slider-controls">
+                        <div class="slider-group">
+                            <div class="slider-label-row">
+                                <label>Inicio</label>
+                                <span id="val_start_${item.id}" class="slider-value">0.0s</span>
+                            </div>
+                            <div id="slider_start_${item.id}"></div>
                         </div>
-                        <div class="editor-input-wrapper">
-                            <label>Fin (segundos)</label>
-                            <input type="number" id="end_${item.id}" step="0.1" value="${item.end}">
+                        <div class="slider-group">
+                            <div class="slider-label-row">
+                                <label>Fin</label>
+                                <span id="val_end_${item.id}" class="slider-value">0.0s</span>
+                            </div>
+                            <div id="slider_end_${item.id}"></div>
                         </div>
                     </div>
                     
-                    <button id="play_${item.id}" class="play-btn">Reproducir</button>
+                    <button id="play_${item.id}" class="play-btn">▶ Reproducir</button>
                 </div>
             </div>
         `;
@@ -196,11 +202,12 @@ function renderFileList() {
             const tempAudio = new Audio(tempUrl);
             tempAudio.onloadedmetadata = () => {
                 item.duration = tempAudio.duration;
-                // Si es un audio nuevo, su fin es el total
-                if(item.end === 0) {
-                   item.end = item.duration;
-                   document.getElementById(`end_${item.id}`).value = item.end.toFixed(1);
+                if (item.end === 0) {
+                    item.end = item.duration;
                 }
+                // Actualizar label de fin si visible
+                const valEnd = document.getElementById(`val_end_${item.id}`);
+                if (valEnd) valEnd.textContent = item.end.toFixed(1) + 's';
                 URL.revokeObjectURL(tempUrl);
             };
         }
@@ -209,7 +216,7 @@ function renderFileList() {
     dropZone.querySelector('p').textContent = `Audios cargados: ${filesState.length}`;
 }
 
-// Destruir todas las instancias de wavesurfer excepto la actual (Ram saving)
+// Destruir todas las instancias de wavesurfer excepto la actual (RAM saving)
 function destroyOtherWaveSurfers(keepId) {
     filesState.forEach(item => {
         if (item.id !== keepId) {
@@ -217,8 +224,14 @@ function destroyOtherWaveSurfers(keepId) {
                 item.wsInstance.destroy();
                 item.wsInstance = null;
             }
+            // Destruir sliders noUi si existen
+            const sliderStart = document.getElementById(`slider_start_${item.id}`);
+            const sliderEnd = document.getElementById(`slider_end_${item.id}`);
+            if (sliderStart && sliderStart.noUiSlider) sliderStart.noUiSlider.destroy();
+            if (sliderEnd && sliderEnd.noUiSlider) sliderEnd.noUiSlider.destroy();
+            
             document.getElementById(`container_${item.id}`).classList.remove('active');
-            document.getElementById(`waveform_${item.id}`).innerHTML = ''; // Clean DOM
+            document.getElementById(`waveform_${item.id}`).innerHTML = '';
         }
     });
 }
@@ -229,21 +242,24 @@ function toggleAccordion(id) {
     const waveformDiv = document.getElementById(`waveform_${id}`);
 
     if (container.classList.contains('active')) {
-        // Cerrar este acordeón
         container.classList.remove('active');
         if (item.wsInstance) {
             item.wsInstance.destroy();
             item.wsInstance = null;
         }
+        // Destruir sliders al cerrar
+        const sliderStart = document.getElementById(`slider_start_${id}`);
+        const sliderEnd = document.getElementById(`slider_end_${id}`);
+        if (sliderStart && sliderStart.noUiSlider) sliderStart.noUiSlider.destroy();
+        if (sliderEnd && sliderEnd.noUiSlider) sliderEnd.noUiSlider.destroy();
+        
         waveformDiv.innerHTML = '';
         return;
     }
 
-    // Abrir acordeón -> inicialización perezosa
     destroyOtherWaveSurfers(id);
     container.classList.add('active');
 
-    // Inicializar WaveSurfer para el archivo activo
     if (!item.wsInstance) {
         initWaveSurfer(item);
     }
@@ -252,7 +268,11 @@ function toggleAccordion(id) {
 function initWaveSurfer(item) {
     const waveformDivID = `#waveform_${item.id}`;
     
-    // Configuración moderna de WaveSurfer v7 Vanilla CDN
+    // Banderas para evitar loops de actualización circular
+    let updatingFromSlider = false;
+    let updatingFromRegion = false;
+
+    // ── WaveSurfer ──
     item.wsInstance = WaveSurfer.create({
         container: waveformDivID,
         waveColor: '#7a88cf',
@@ -265,27 +285,33 @@ function initWaveSurfer(item) {
         responsive: true
     });
 
-    // Registramos el plugin regions en la API global
     const wsRegions = item.wsInstance.registerPlugin(WaveSurfer.Regions.create());
 
-    // Referencias a inputs DOM
-    const inputStart = document.getElementById(`start_${item.id}`);
-    const inputEnd = document.getElementById(`end_${item.id}`);
+    // ── Referencias DOM ──
+    const sliderStartEl = document.getElementById(`slider_start_${item.id}`);
+    const sliderEndEl = document.getElementById(`slider_end_${item.id}`);
+    const valStartSpan = document.getElementById(`val_start_${item.id}`);
+    const valEndSpan = document.getElementById(`val_end_${item.id}`);
     const btnPlay = document.getElementById(`play_${item.id}`);
 
-    // Modificación Bi-Direccional: Del input al WaveSurfer
-    const updateRegionFromInputs = () => {
-        let nStart = parseFloat(inputStart.value) || 0;
-        let nEnd = parseFloat(inputEnd.value) || item.duration;
-        
+    // ── Función: Sincronizar región desde sliders ──
+    const syncRegionFromSliders = () => {
+        if (updatingFromRegion) return;
+        updatingFromSlider = true;
+
+        let nStart = parseFloat(sliderStartEl.noUiSlider.get());
+        let nEnd = parseFloat(sliderEndEl.noUiSlider.get());
+
         if (nStart < 0) nStart = 0;
         if (nEnd > item.duration) nEnd = item.duration;
-        if (nStart >= nEnd) nStart = nEnd - 0.1;
+        if (nStart >= nEnd) nStart = Math.max(0, nEnd - 0.5);
 
         item.start = nStart;
         item.end = nEnd;
-        
-        wsRegions.getRegions().forEach(r => r.remove()); // Borrar antigua
+        valStartSpan.textContent = nStart.toFixed(1) + 's';
+        valEndSpan.textContent = nEnd.toFixed(1) + 's';
+
+        wsRegions.getRegions().forEach(r => r.remove());
         wsRegions.addRegion({
             start: item.start,
             end: item.end,
@@ -293,54 +319,93 @@ function initWaveSurfer(item) {
             drag: true,
             resize: true
         });
+
+        updatingFromSlider = false;
     };
 
-    ['change', 'keyup'].forEach(evt => {
-        inputStart.addEventListener(evt, updateRegionFromInputs);
-        inputEnd.addEventListener(evt, updateRegionFromInputs);
-    });
-
-    // Eventos tras tener el canvas listo
+    // ── Evento: WaveSurfer ready ──
     item.wsInstance.on('ready', () => {
         const dur = item.wsInstance.getDuration();
         item.duration = dur;
         
         let endT = item.end === 0 ? dur : item.end;
         item.end = endT;
-        inputEnd.value = endT.toFixed(1);
-        
-        updateRegionFromInputs(); // Fuerza la creacion de la región inicial
+
+        // Crear sliders noUiSlider
+        noUiSlider.create(sliderStartEl, {
+            start: [item.start],
+            connect: [true, false],
+            range: { min: 0, max: dur },
+            step: 0.1,
+            tooltips: false
+        });
+
+        noUiSlider.create(sliderEndEl, {
+            start: [endT],
+            connect: [false, true],
+            range: { min: 0, max: dur },
+            step: 0.1,
+            tooltips: false
+        });
+
+        // Actualizar labels iniciales
+        valStartSpan.textContent = item.start.toFixed(1) + 's';
+        valEndSpan.textContent = endT.toFixed(1) + 's';
+
+        // Vincular sliders → región
+        sliderStartEl.noUiSlider.on('update', syncRegionFromSliders);
+        sliderEndEl.noUiSlider.on('update', syncRegionFromSliders);
+
+        // Crear región inicial
+        syncRegionFromSliders();
     });
 
-    // Modificación Bi-Direccional: Del WaveSurfer a los inputs
+    // ── Evento: Región arrastrada → actualizar sliders ──
     wsRegions.on('region-updated', (region) => {
+        if (updatingFromSlider) return;
+        updatingFromRegion = true;
+
         item.start = region.start;
         item.end = region.end;
-        inputStart.value = item.start.toFixed(1);
-        inputEnd.value = item.end.toFixed(1);
+
+        sliderStartEl.noUiSlider.set(item.start);
+        sliderEndEl.noUiSlider.set(item.end);
+        valStartSpan.textContent = item.start.toFixed(1) + 's';
+        valEndSpan.textContent = item.end.toFixed(1) + 's';
+
+        updatingFromRegion = false;
     });
 
-    // Botón Play
+    // ── Hacer handles de región más grandes vía JS (fallback) ──
+    wsRegions.on('region-created', (region) => {
+        const handles = region.element.querySelectorAll('[data-resize]');
+        handles.forEach(handle => {
+            handle.style.width = '14px';
+            handle.style.background = '#ff9e64';
+            handle.style.borderRadius = '4px';
+            handle.style.opacity = '0.9';
+        });
+    });
+
+    // ── Botón Play ──
     btnPlay.onclick = () => {
-        if(item.wsInstance.isPlaying()){
+        if (item.wsInstance.isPlaying()) {
             item.wsInstance.pause();
-            btnPlay.textContent = "Reproducir";
+            btnPlay.textContent = '▶ Reproducir';
         } else {
-            // Reproducir solo el recorte actual
             const activeRegion = wsRegions.getRegions()[0];
-            if(activeRegion) {
+            if (activeRegion) {
                 activeRegion.play();
-                btnPlay.textContent = "Pausar";
+                btnPlay.textContent = '⏸ Pausar';
             }
         }
     };
-    
-    // Reset texto botón de play al pausarse
+
     item.wsInstance.on('pause', () => {
-         btnPlay.textContent = "Reproducir";
+        btnPlay.textContent = '▶ Reproducir';
     });
 
-    // Cargar archivo
+    // ── Cargar archivo ──
     const audioUrl = URL.createObjectURL(item.file);
     item.wsInstance.load(audioUrl);
 }
