@@ -1,30 +1,45 @@
-const CACHE_NAME = 'audio-tool-v1';
+const CACHE_NAME = 'audio-tool-v2';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
     '/styles.css',
     '/app.js'
-    // Nota: El binario de unpkg de FFmpeg se cacheará automáticamente si interceptamos las requests de red.
 ];
 
+// Instalar: cachear assets estáticos
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS_TO_CACHE))
     );
+    // Forzar activación inmediata sin esperar a que cierren pestañas
+    self.skipWaiting();
 });
 
+// Activar: eliminar caches de versiones anteriores
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        caches.keys().then((names) => {
+            return Promise.all(
+                names.filter(name => name !== CACHE_NAME)
+                     .map(name => caches.delete(name))
+            );
+        })
+    );
+    // Tomar control de las pestañas abiertas inmediatamente
+    self.clients.claim();
+});
+
+// Fetch: cache-first con fallback a red
 self.addEventListener('fetch', (event) => {
-    // Solo procesar peticiones GET con esquemas http/https soportados
+    // Solo procesar peticiones GET con esquemas http/https
     if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) {
         return;
     }
 
     event.respondWith(
         caches.match(event.request).then((response) => {
-            // Retorna cache si existe, si no, hace la petición a la red
             return response || fetch(event.request).then((fetchRes) => {
-                // Guardar en cache sólo si es una respuesta válida
-                if (!fetchRes || fetchRes.status !== 200 || fetchRes.type !== 'basic' && fetchRes.type !== 'cors') {
+                if (!fetchRes || fetchRes.status !== 200 || (fetchRes.type !== 'basic' && fetchRes.type !== 'cors')) {
                     return fetchRes;
                 }
                 const responseToCache = fetchRes.clone();
