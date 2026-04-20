@@ -21,8 +21,8 @@ header { display: flex; justify-content: space-between; padding: 1rem 5%; backgr
 .in-feed-ad { width: 100%; height: 100px; margin: 1rem 0; border: 1px dashed #ccc; background: #eef; display: flex; align-items: center; justify-content: center; }
 
 /* Micro-SaaS Tool */
-.layout-grid { display: flex; gap: 2rem; max-width: 1200px; margin: 2rem auto; padding: 0 1rem; align-items: flex-start; justify-content: center; }
-.content-area { flex: 1; min-width: 0; max-width: 800px; text-align: center; }
+.layout-grid { display: flex; gap: 2rem; max-width: 1200px; margin: 2rem auto; padding: 0 1rem; align-items: flex-start; justify-content: space-between; }
+.content-area { flex: 1; min-width: 0; text-align: center; }
 .sidebar { width: 300px; display: none; } /* Oculto en móbile */
 @media (min-width: 1024px) {
     .sidebar { display: block; }
@@ -53,7 +53,19 @@ header { display: flex; justify-content: space-between; padding: 1rem 5%; backgr
 .btn-edit { background: var(--primary-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; }
 .file-content { display: none; padding: 1rem; border-top: 1px solid var(--border-color); background: #fafafa; }
 .file-item.active .file-content { display: block; }
-.waveform-container { width: 100%; margin-top: 1rem; border: 1px solid #ddd; background: #fff; border-radius: 4px; overflow: hidden; }
+
+/* Dark Editor WaveSurfer Styles (Basado en la Referencia) */
+.editor-box { background: #1a1b24; border-radius: 12px; padding: 1.5rem; text-align: left; }
+.editor-text { color: #a9b1d6; font-size: 0.85rem; margin-bottom: 1rem; font-weight: 500;}
+.waveform-ui { position: relative; width: 100%; border: 1px solid #292e42; background: #272B40; border-radius: 8px; margin-bottom: 1rem; padding: 10px 0; overflow: hidden; }
+.editor-controls-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+.editor-controls-row label { color: #c0caf5; font-size: 0.85rem; font-weight: 600; white-space: nowrap; margin-bottom: 0;}
+.editor-input-wrapper { display: flex; align-items: center; gap: 0.5rem; flex: 1; }
+.editor-input-wrapper input { background: #16161e; color: #fff; border: 1px solid #414868; border-radius: 6px; padding: 0.5rem; width: 100%; text-align: center; -moz-appearance: textfield; font-weight: 600;}
+.editor-input-wrapper input:focus { outline: none; border-color: var(--primary-color); }
+.editor-input-wrapper input::-webkit-outer-spin-button, .editor-input-wrapper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.play-btn { width: 100%; background: #3b4261; color: #fff; border: 1px solid #414868; border-radius: 8px; padding: 0.8rem; font-weight: 600; cursor: pointer; transition: 0.2s;}
+.play-btn:hover { background: #4f5882; }
 
 /* Modal */
 .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; }

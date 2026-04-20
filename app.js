@@ -167,18 +167,24 @@ function renderFileList() {
                 <button class="btn-edit" onclick="event.stopPropagation(); toggleAccordion('${item.id}')">⚙️ Editar</button>
             </div>
             <div class="file-content" id="content_${item.id}">
-                <div class="time-controls" style="margin-bottom: 1rem;">
-                    <div class="control-group">
-                        <label>Inicio (s):</label>
-                        <input type="number" id="start_${item.id}" step="0.1" value="${item.start}" disabled>
+                <div class="editor-box">
+                    <div class="editor-text">Ajusta los deslizadores para definir el segmento de audio a recortar.</div>
+                    
+                    <div id="waveform_${item.id}" class="waveform-ui"></div>
+                    
+                    <div class="editor-controls-row">
+                        <div class="editor-input-wrapper">
+                            <label>Inicio (segundos)</label>
+                            <input type="number" id="start_${item.id}" step="0.1" value="${item.start}">
+                        </div>
+                        <div class="editor-input-wrapper">
+                            <label>Fin (segundos)</label>
+                            <input type="number" id="end_${item.id}" step="0.1" value="${item.end}">
+                        </div>
                     </div>
-                    <div class="control-group">
-                        <label>Fin (s):</label>
-                        <input type="number" id="end_${item.id}" step="0.1" value="${item.end}" disabled>
-                    </div>
+                    
+                    <button id="play_${item.id}" class="play-btn">Reproducir</button>
                 </div>
-                <div id="waveform_${item.id}" class="waveform-container"></div>
-                <button class="cta-button" style="padding: 0.5rem; margin-top: 1rem; font-size: 0.9rem;" onclick="toggleAccordion('${item.id}')">Guardar y Cerrar</button>
             </div>
         `;
         
@@ -186,11 +192,16 @@ function renderFileList() {
         
         // Cargar metadatos básicos rápido (duración global)
         if (item.duration === 0) {
-            const tempAudio = new Audio(URL.createObjectURL(item.file));
+            const tempUrl = URL.createObjectURL(item.file);
+            const tempAudio = new Audio(tempUrl);
             tempAudio.onloadedmetadata = () => {
                 item.duration = tempAudio.duration;
-                item.end = item.duration;
-                document.getElementById(`end_${item.id}`).value = item.end.toFixed(1);
+                // Si es un audio nuevo, su fin es el total
+                if(item.end === 0) {
+                   item.end = item.duration;
+                   document.getElementById(`end_${item.id}`).value = item.end.toFixed(1);
+                }
+                URL.revokeObjectURL(tempUrl);
             };
         }
     });
@@ -241,17 +252,52 @@ function toggleAccordion(id) {
 function initWaveSurfer(item) {
     const waveformDivID = `#waveform_${item.id}`;
     
+    // Configuración moderna de WaveSurfer v7 Vanilla CDN
     item.wsInstance = WaveSurfer.create({
         container: waveformDivID,
-        waveColor: '#4F46E5',
-        progressColor: '#4338CA',
-        cursorColor: '#111827',
+        waveColor: '#7a88cf',
+        progressColor: '#c0caf5',
+        cursorColor: '#ff9e64',
         barWidth: 2,
-        height: 80,
-        responsive: true,
-        plugins: [
-            WaveSurfer.Regions.create()
-        ]
+        barGap: 1,
+        barRadius: 2,
+        height: 100,
+        responsive: true
+    });
+
+    // Registramos el plugin regions en la API global
+    const wsRegions = item.wsInstance.registerPlugin(WaveSurfer.Regions.create());
+
+    // Referencias a inputs DOM
+    const inputStart = document.getElementById(`start_${item.id}`);
+    const inputEnd = document.getElementById(`end_${item.id}`);
+    const btnPlay = document.getElementById(`play_${item.id}`);
+
+    // Modificación Bi-Direccional: Del input al WaveSurfer
+    const updateRegionFromInputs = () => {
+        let nStart = parseFloat(inputStart.value) || 0;
+        let nEnd = parseFloat(inputEnd.value) || item.duration;
+        
+        if (nStart < 0) nStart = 0;
+        if (nEnd > item.duration) nEnd = item.duration;
+        if (nStart >= nEnd) nStart = nEnd - 0.1;
+
+        item.start = nStart;
+        item.end = nEnd;
+        
+        wsRegions.getRegions().forEach(r => r.remove()); // Borrar antigua
+        wsRegions.addRegion({
+            start: item.start,
+            end: item.end,
+            color: 'rgba(255, 158, 100, 0.2)',
+            drag: true,
+            resize: true
+        });
+    };
+
+    ['change', 'keyup'].forEach(evt => {
+        inputStart.addEventListener(evt, updateRegionFromInputs);
+        inputEnd.addEventListener(evt, updateRegionFromInputs);
     });
 
     // Eventos tras tener el canvas listo
@@ -259,31 +305,44 @@ function initWaveSurfer(item) {
         const dur = item.wsInstance.getDuration();
         item.duration = dur;
         
-        // Crear la región inicial (toda la cancion, o el ultimo estado guardado)
         let endT = item.end === 0 ? dur : item.end;
+        item.end = endT;
+        inputEnd.value = endT.toFixed(1);
         
-        item.wsInstance.addRegion({
-            id: 'cut_region',
-            start: item.start,
-            end: endT,
-            color: 'rgba(79, 70, 229, 0.2)', // Var primary
-            drag: true,
-            resize: true
-        });
-        
-        document.getElementById(`end_${item.id}`).value = endT.toFixed(1);
+        updateRegionFromInputs(); // Fuerza la creacion de la región inicial
     });
 
-    // Actualizar estado general al mover el recorte visual (Refresh ad simulation)
-    item.wsInstance.on('region-updated', (region) => {
+    // Modificación Bi-Direccional: Del WaveSurfer a los inputs
+    wsRegions.on('region-updated', (region) => {
         item.start = region.start;
         item.end = region.end;
-        document.getElementById(`start_${item.id}`).value = item.start.toFixed(1);
-        document.getElementById(`end_${item.id}`).value = item.end.toFixed(1);
+        inputStart.value = item.start.toFixed(1);
+        inputEnd.value = item.end.toFixed(1);
+    });
+
+    // Botón Play
+    btnPlay.onclick = () => {
+        if(item.wsInstance.isPlaying()){
+            item.wsInstance.pause();
+            btnPlay.textContent = "Reproducir";
+        } else {
+            // Reproducir solo el recorte actual
+            const activeRegion = wsRegions.getRegions()[0];
+            if(activeRegion) {
+                activeRegion.play();
+                btnPlay.textContent = "Pausar";
+            }
+        }
+    };
+    
+    // Reset texto botón de play al pausarse
+    item.wsInstance.on('pause', () => {
+         btnPlay.textContent = "Reproducir";
     });
 
     // Cargar archivo
-    item.wsInstance.loadBlob(item.file);
+    const audioUrl = URL.createObjectURL(item.file);
+    item.wsInstance.load(audioUrl);
 }
 
 // ==========================================
