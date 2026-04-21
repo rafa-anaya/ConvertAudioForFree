@@ -15,21 +15,26 @@ const i18n = {
         modal_processing: "Procesando Audio...",
         modal_wait: "Por favor espera. Esto se ejecuta en tu dispositivo y no consume datos.",
         footer_privacy: "Privacidad 100% Client-Side. Ningún archivo es enviado a nuestros servidores.",
-        // Contenido SEO
-        seo_html: `
-            <h2>¿Cómo cortar y convertir audios online?</h2>
-            <p>Sigue estos tres sencillos pasos para manipular tus archivos de audio sin instalar programas:</p>
-            <ol>
-                <li><strong>Sube tu archivo:</strong> Arrastra tu audio (soporta la mayoría de formatos).</li>
-                <li><strong>Ajusta los parámetros:</strong> Selecciona el segundo de inicio y fin, y elige tu formato deseado (MP3, WAV, etc.).</li>
-                <li><strong>Descarga al instante:</strong> Haz clic en procesar. Todo el cálculo ocurre en tu procesador.</li>
-            </ol>
-            <h2>Privacidad Total (Tecnología Client-Side)</h2>
-            <p>A diferencia de otras herramientas, nosotros usamos tecnología WebAssembly. Esto significa que tu audio <strong>nunca es subido a ningún servidor</strong>. Todo el procesamiento ocurre en tu propio navegador, garantizando privacidad absoluta para grabaciones sensibles, podcasts o música inédita.</p>
-            <h2>Preguntas Frecuentes (FAQ)</h2>
-            <h3>¿Cuál es el límite de tamaño?</h3>
-            <p>No hay límite por nuestra parte. El límite está dictado por la memoria RAM disponible en tu dispositivo, ya que todo se procesa localmente.</p>
-        `
+        // Contenido SEO (claves individuales para data-i18n)
+        seo_h2_1: "¿Cómo recortar y convertir audio o video gratis sin programas?",
+        seo_p_1: "AudioTool Pro convierte tu navegador en un editor de audio profesional. Recorta, convierte y extrae el audio de archivos de video (MP4, MKV, AVI, WEBM) directamente en tu dispositivo — sin subir nada a la nube, sin registros y sin instalar software. Tu música, podcasts y grabaciones nunca abandonan tu equipo.",
+        seo_h3_1: "Tres pasos para editar tu audio",
+        seo_step_1: "Arrastra tu archivo de audio o video al área de carga. Soporta MP3, WAV, OGG, FLAC, MP4, MKV, AVI y WEBM.",
+        seo_step_2: "Usa los deslizadores de inicio y fin para recortar con precisión. La visualización de onda te ayuda a identificar silencios y secciones clave.",
+        seo_step_3: "Elige el formato de salida (MP3, WAV, OGG o AAC) y haz clic en \u00abConvertir y Descargar\u00bb. El procesamiento ocurre localmente en tu CPU.",
+        seo_h3_2: "Formatos de audio y video compatibles",
+        seo_p_2: "Acepta las entradas de audio más populares (WAV, MP3, OGG, FLAC) además de contenedores de video (MP4, MKV, AVI, WEBM). El motor FFmpeg.wasm extrae automáticamente el canal de audio del video sin pérdida de calidad.",
+        seo_h3_3: "Privacidad total: tecnología 100% client-side",
+        seo_p_3: "A diferencia de otros convertidores online, AudioTool Pro usa WebAssembly para ejecutar FFmpeg directamente en tu navegador. Ningún archivo se sube a servidores externos. Ideal para grabaciones sensibles, demos musicales inéditas o contenido privado que necesitas proteger.",
+        seo_h3_4: "Conversión masiva por lotes",
+        seo_p_4: "Puedes cargar múltiples archivos de audio simultáneamente. Define un formato de salida global, ajusta los puntos de corte individuales para cada pista, y descárgalos todos con un solo clic. Perfecto para preparar ringtones, efectos de sonido o lotes de episodios de podcast.",
+        seo_h3_5: "Preguntas frecuentes",
+        seo_faq_q1: "¿Cuál es el límite de tamaño de archivo?",
+        seo_faq_a1: "No hay límite por nuestra parte. La única restricción es la memoria RAM disponible en tu dispositivo, ya que todo se procesa localmente en tu navegador.",
+        seo_faq_q2: "¿Funciona en el celular?",
+        seo_faq_a2: "Sí. AudioTool Pro es completamente responsivo y funciona en cualquier navegador moderno de Android o iOS. Los controles de recorte están optimizados para pantallas táctiles.",
+        seo_faq_q3: "¿Es realmente gratis?",
+        seo_faq_a3: "Totalmente. El servicio es gratuito y sin registro. Funciona con tecnología WebAssembly que no genera costos de servidor porque todo el procesamiento ocurre en tu dispositivo."
     },
     en: {
         meta_title: "Audio Cutter & Converter Online | 100% Private",
@@ -44,20 +49,26 @@ const i18n = {
         modal_processing: "Processing Audio...",
         modal_wait: "Please wait. This runs on your device and doesn't use data.",
         footer_privacy: "100% Client-Side Privacy. No files are uploaded to our servers.",
-        seo_html: `
-            <h2>How to cut and convert audio online?</h2>
-            <p>Follow these three simple steps to manipulate your audio files without installing software:</p>
-            <ol>
-                <li><strong>Upload:</strong> Drag your audio file (supports most formats).</li>
-                <li><strong>Adjust:</strong> Select start/end times and your desired format (MP3, WAV, etc.).</li>
-                <li><strong>Download:</strong> Click process. All computation happens on your CPU.</li>
-            </ol>
-            <h2>Total Privacy (Client-Side Tech)</h2>
-            <p>Unlike other tools, we use WebAssembly. Your audio is <strong>never uploaded to a server</strong>. Processing happens entirely in your browser, ensuring absolute privacy for sensitive recordings.</p>
-            <h2>Frequently Asked Questions (FAQ)</h2>
-            <h3>What is the file size limit?</h3>
-            <p>There is no limit on our end. The limit is determined by your device's available RAM, as everything is processed locally.</p>
-        `
+        // SEO Content (individual keys for data-i18n)
+        seo_h2_1: "How to trim and convert audio or video for free without software?",
+        seo_p_1: "AudioTool Pro turns your browser into a professional audio editor. Trim, convert, and extract audio from video files (MP4, MKV, AVI, WEBM) directly on your device — no cloud uploads, no sign-ups, no software to install. Your music, podcasts, and recordings never leave your device.",
+        seo_h3_1: "Three steps to edit your audio",
+        seo_step_1: "Drag your audio or video file to the upload area. Supports MP3, WAV, OGG, FLAC, MP4, MKV, AVI, and WEBM.",
+        seo_step_2: "Use the start and end sliders to trim with precision. The waveform visualization helps you identify silences and key sections.",
+        seo_step_3: "Choose the output format (MP3, WAV, OGG, or AAC) and click \u00abConvert & Download\u00bb. Processing happens locally on your CPU.",
+        seo_h3_2: "Supported audio and video formats",
+        seo_p_2: "Accepts the most popular audio inputs (WAV, MP3, OGG, FLAC) as well as video containers (MP4, MKV, AVI, WEBM). The FFmpeg.wasm engine automatically extracts the audio channel from video without quality loss.",
+        seo_h3_3: "Total privacy: 100% client-side technology",
+        seo_p_3: "Unlike other online converters, AudioTool Pro uses WebAssembly to run FFmpeg directly in your browser. No files are uploaded to external servers. Ideal for sensitive recordings, unreleased music demos, or private content you need to protect.",
+        seo_h3_4: "Batch conversion",
+        seo_p_4: "You can load multiple audio files simultaneously. Set a global output format, adjust individual cut points for each track, and download them all with a single click. Perfect for preparing ringtones, sound effects, or podcast episode batches.",
+        seo_h3_5: "Frequently asked questions",
+        seo_faq_q1: "What is the file size limit?",
+        seo_faq_a1: "There is no limit on our end. The only restriction is the available RAM on your device, as everything is processed locally in your browser.",
+        seo_faq_q2: "Does it work on mobile?",
+        seo_faq_a2: "Yes. AudioTool Pro is fully responsive and works on any modern Android or iOS browser. The trimming controls are optimized for touchscreens.",
+        seo_faq_q3: "Is it really free?",
+        seo_faq_a3: "Absolutely. The service is free and requires no registration. It runs on WebAssembly technology that generates no server costs because all processing happens on your device."
     }
 };
 
@@ -75,13 +86,12 @@ function applyLanguage() {
     document.getElementById('html-root').lang = currentLang;
     document.title = dict.meta_title;
     document.querySelector('meta[name="description"]').content = dict.meta_desc;
-    
+
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (dict[key]) el.textContent = dict[key];
     });
 
-    document.getElementById('seo-content').innerHTML = dict.seo_html;
 }
 
 document.getElementById('lang-selector').addEventListener('change', (e) => {
@@ -113,9 +123,9 @@ audioInput.addEventListener('change', (e) => {
 });
 
 function handleFiles(files) {
-    const newFiles = Array.from(files).filter(f => 
-        f.type.startsWith('audio/') || 
-        f.type.startsWith('video/') || 
+    const newFiles = Array.from(files).filter(f =>
+        f.type.startsWith('audio/') ||
+        f.type.startsWith('video/') ||
         f.name.match(/\.(mp4|mkv|avi|webm)$/i)
     );
     if (newFiles.length === 0) return;
@@ -143,7 +153,7 @@ function handleFiles(files) {
 
 function renderFileList() {
     fileListContainer.innerHTML = '';
-    
+
     filesState.forEach((item, index) => {
         // Anuncio In-Feed cada 3 elementos
         if (index > 0 && index % 3 === 0) {
@@ -154,11 +164,11 @@ function renderFileList() {
         }
 
         const sizeMB = (item.file.size / (1024 * 1024)).toFixed(2);
-        
+
         const fileItem = document.createElement('div');
         fileItem.className = 'file-item';
         fileItem.id = `container_${item.id}`;
-        
+
         fileItem.innerHTML = `
             <div class="file-header" onclick="toggleAccordion('${item.id}')">
                 <div class="file-info">
@@ -196,9 +206,9 @@ function renderFileList() {
                 </div>
             </div>
         `;
-        
+
         fileListContainer.appendChild(fileItem);
-        
+
         // Cargar metadatos básicos rápido (duración global)
         if (item.duration === 0) {
             const tempUrl = URL.createObjectURL(item.file);
@@ -220,7 +230,7 @@ function renderFileList() {
 }
 
 // Función para remover un audio específico
-window.removeAudio = function(id, event) {
+window.removeAudio = function (id, event) {
     if (event) event.stopPropagation();
 
     // Encontrar y destruir recursos de Wavesurfer / noUiSlider
@@ -261,7 +271,7 @@ function destroyOtherWaveSurfers(keepId) {
             const sliderEnd = document.getElementById(`slider_end_${item.id}`);
             if (sliderStart && sliderStart.noUiSlider) sliderStart.noUiSlider.destroy();
             if (sliderEnd && sliderEnd.noUiSlider) sliderEnd.noUiSlider.destroy();
-            
+
             document.getElementById(`container_${item.id}`).classList.remove('active');
             document.getElementById(`waveform_${item.id}`).innerHTML = '';
         }
@@ -284,7 +294,7 @@ function toggleAccordion(id) {
         const sliderEnd = document.getElementById(`slider_end_${id}`);
         if (sliderStart && sliderStart.noUiSlider) sliderStart.noUiSlider.destroy();
         if (sliderEnd && sliderEnd.noUiSlider) sliderEnd.noUiSlider.destroy();
-        
+
         waveformDiv.innerHTML = '';
         return;
     }
@@ -299,10 +309,11 @@ function toggleAccordion(id) {
 
 function initWaveSurfer(item) {
     const waveformDivID = `#waveform_${item.id}`;
-    
+
     // Banderas para evitar loops de actualización circular
     let updatingFromSlider = false;
     let updatingFromRegion = false;
+    const isMobile = window.matchMedia('(max-width: 600px)').matches;
 
     // ── WaveSurfer ──
     item.wsInstance = WaveSurfer.create({
@@ -346,19 +357,19 @@ function initWaveSurfer(item) {
         // Usar setOptions evita borrar la estructura DOM, manteniendo el drag del usuario táctil sano.
         const regions = wsRegions.getRegions();
         if (regions.length > 0) {
-             // Actualizar existente
-             regions[0].setOptions({
-                 start: item.start,
-                 end: item.end
-             });
+            // Actualizar existente
+            regions[0].setOptions({
+                start: item.start,
+                end: item.end
+            });
         } else {
             // Crear si no existía (ej. renderizado inicial)
             wsRegions.addRegion({
                 start: item.start,
                 end: item.end,
                 color: 'rgba(255, 158, 100, 0.2)',
-                drag: true,
-                resize: true
+                drag: !isMobile,
+                resize: !isMobile
             });
         }
 
@@ -369,7 +380,7 @@ function initWaveSurfer(item) {
     item.wsInstance.on('ready', () => {
         const dur = item.wsInstance.getDuration();
         item.duration = dur;
-        
+
         let endT = item.end === 0 ? dur : item.end;
         item.end = endT;
 
@@ -405,9 +416,9 @@ function initWaveSurfer(item) {
     // ── Evento de Límite (Loop Limit Backup) ──
     // Fuerza pausa cuando llegue al fin visual
     item.wsInstance.on('audioprocess', (currentTime) => {
-         if (item.wsInstance.isPlaying() && currentTime >= item.end) {
-              item.wsInstance.pause();
-         }
+        if (item.wsInstance.isPlaying() && currentTime >= item.end) {
+            item.wsInstance.pause();
+        }
     });
 
     // ── Evento: Región arrastrada → actualizar sliders ──
@@ -426,16 +437,18 @@ function initWaveSurfer(item) {
         updatingFromRegion = false;
     });
 
-    // ── Hacer handles de región más grandes vía JS (fallback) ──
-    wsRegions.on('region-created', (region) => {
-        const handles = region.element.querySelectorAll('[data-resize]');
-        handles.forEach(handle => {
-            handle.style.width = '14px';
-            handle.style.background = '#ff9e64';
-            handle.style.borderRadius = '4px';
-            handle.style.opacity = '0.9';
+    // ── Hacer handles de región más grandes vía JS (fallback, solo desktop) ──
+    if (!isMobile) {
+        wsRegions.on('region-created', (region) => {
+            const handles = region.element.querySelectorAll('[data-resize]');
+            handles.forEach(handle => {
+                handle.style.width = '4px';
+                handle.style.background = '#ff9e64';
+                handle.style.borderRadius = '4px';
+                handle.style.opacity = '0.9';
+            });
         });
-    });
+    }
 
     // ── Botón Play ──
     btnPlay.onclick = () => {
@@ -465,7 +478,7 @@ function initWaveSurfer(item) {
 // 3. MOTOR FFMPEG.WASM (Procesamiento Masivo)
 // ==========================================
 const { createFFmpeg, fetchFile } = FFmpeg;
-const ffmpeg = createFFmpeg({ 
+const ffmpeg = createFFmpeg({
     log: true,
     corePath: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js'
 });
@@ -488,11 +501,11 @@ document.getElementById('process-btn').addEventListener('click', async () => {
 
         for (let i = 0; i < filesState.length; i++) {
             const item = filesState[i];
-            
+
             const modalText = document.querySelector('#processing-modal h2');
             if (modalText) {
-                modalText.textContent = currentLang === 'es' ? 
-                    `Procesando audio ${i + 1} de ${filesState.length}...` : 
+                modalText.textContent = currentLang === 'es' ?
+                    `Procesando audio ${i + 1} de ${filesState.length}...` :
                     `Processing audio ${i + 1} of ${filesState.length}...`;
             }
 
@@ -502,7 +515,7 @@ document.getElementById('process-btn').addEventListener('click', async () => {
             ffmpeg.FS('writeFile', inputName, await fetchFile(item.file));
 
             const args = ['-i', inputName];
-            
+
             // Si el start es > 0 o si el end es menor que la duracion original
             if (item.start > 0) args.push('-ss', item.start.toString());
             // Si recortó el final
@@ -524,7 +537,7 @@ document.getElementById('process-btn').addEventListener('click', async () => {
             const originalName = item.file.name.substring(0, item.file.name.lastIndexOf('.')) || `audio_${i}`;
             a.download = `recorte_${originalName}.${globalFormat}`;
             a.click();
-            
+
             // Clean specific FS memory
             ffmpeg.FS('unlink', inputName);
             ffmpeg.FS('unlink', outputName);
@@ -536,7 +549,7 @@ document.getElementById('process-btn').addEventListener('click', async () => {
     } finally {
         modal.classList.add('hidden');
         if (document.querySelector('#processing-modal h2')) {
-            applyLanguage(); 
+            applyLanguage();
         }
     }
 });

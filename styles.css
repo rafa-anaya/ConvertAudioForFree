@@ -151,8 +151,15 @@ header { display: flex; justify-content: space-between; padding: 1rem 5%; backgr
 @media (max-width: 600px) {
     .waveform-ui { min-height: 80px; }
     .slider-group { flex: 1 1 100%; }
+    /* Ocultar handles de la región en móvil — solo sliders */
     .waveform-ui [data-resize] {
-        width: 20px !important;
+        display: none !important;
+    }
+    /* Desactivar drag de la región en móvil */
+    .waveform-ui [data-resize-left],
+    .waveform-ui [data-resize-right] {
+        display: none !important;
+        pointer-events: none !important;
     }
     .slider-group .noUi-handle {
         width: 28px !important;
@@ -172,6 +179,73 @@ header { display: flex; justify-content: space-between; padding: 1rem 5%; backgr
 
 /* SEO Content */
 .divider { margin: 3rem 0; border: 0; border-top: 1px solid var(--border-color); }
-.seo-container { max-width: 800px; margin: 0 auto 3rem; padding: 0 1rem; }
-.seo-container h2 { margin-top: 2rem; margin-bottom: 1rem; }
+
+/* SEO & FAQ Content — Clean Professional Layout */
+.seo-container { 
+    max-width: 780px; 
+    margin: 3rem auto; 
+    padding: 2.5rem 2rem;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.seo-container h2 { 
+    font-size: 1.6rem;
+    color: var(--text-color);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+}
+
+.seo-container h3 {
+    font-size: 1.15rem;
+    color: var(--text-color);
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.seo-container h4 {
+    font-size: 1rem;
+    color: #374151;
+    font-weight: 600;
+    margin-top: 1.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.seo-container p {
+    color: #4b5563;
+    font-size: 0.95rem;
+    line-height: 1.75;
+    margin-bottom: 0.5rem;
+}
+
+.seo-container ol {
+    color: #4b5563;
+    font-size: 0.95rem;
+    line-height: 1.75;
+    padding-left: 1.25rem;
+    margin: 0.75rem 0 0.5rem;
+}
+
+.seo-container ol li {
+    margin-bottom: 0.5rem;
+    padding-left: 0.25rem;
+}
+
+.seo-container ol li::marker {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .seo-container { margin: 2rem 1rem; padding: 1.5rem 1.25rem; }
+    .seo-container h2 { font-size: 1.35rem; }
+    .seo-container h3 { font-size: 1.05rem; }
+}
+
 .hidden { display: none !important; }

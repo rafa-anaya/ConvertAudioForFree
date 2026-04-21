@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="es" id="html-root">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="meta_title">Convertidor y Recortador de Audio Universal</title>
-    <meta name="description" data-i18n="meta_desc" content="Convierte y recorta audios gratis, sin límites y 100% privado en tu navegador.">
+    <meta name="description" data-i18n="meta_desc"
+        content="Convierte y recorta audios gratis, sin límites y 100% privado en tu navegador.">
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
-    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js" crossorigin="anonymous"></script>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"
+        crossorigin="anonymous"></script>
     <script src="https://unpkg.com/wavesurfer.js@7.0.0/dist/wavesurfer.min.js"></script>
     <script src="https://unpkg.com/wavesurfer.js@7.0.0/dist/plugins/regions.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css"
+        crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"
+        crossorigin="anonymous"></script>
 </head>
+
 <body>
     <header>
         <div class="logo">🎧 AudioTool Pro</div>
@@ -24,7 +31,7 @@
 
     <div class="ad-zone passive-ad">
         <span class="ad-label">Advertisement</span>
-        </div>
+    </div>
 
     <main id="app-container" class="layout-grid">
         <section class="content-area">
@@ -36,10 +43,12 @@
                     <p data-i18n="drop_text">Arrastra tus audios aquí o haz clic para subir</p>
                     <input type="file" id="audio-input" accept="audio/*,video/*,.mp4,.mkv,.avi,.webm" multiple hidden>
                 </div>
-                
-                <div id="global-controls" class="controls hidden" style="margin-bottom: 2rem; padding: 1rem; background: #EEF2FF; border-radius: 8px;">
-                     <div class="control-group">
-                        <label data-i18n="lbl_format" style="margin-bottom: 0.5rem; display:block;">Formato de Salida Global:</label>
+
+                <div id="global-controls" class="controls hidden"
+                    style="margin-bottom: 2rem; padding: 1rem; background: #EEF2FF; border-radius: 8px;">
+                    <div class="control-group">
+                        <label data-i18n="lbl_format" style="margin-bottom: 0.5rem; display:block;">Formato de Salida
+                            Global:</label>
                         <select id="output-format">
                             <option value="mp3">MP3</option>
                             <option value="wav">WAV</option>
@@ -53,11 +62,12 @@
                 <div id="file-list" class="file-list"></div>
 
                 <div id="process-controls" class="controls hidden">
-                    <button id="process-btn" class="cta-button" data-i18n="btn_process">Convertir y Descargar Todo</button>
+                    <button id="process-btn" class="cta-button" data-i18n="btn_process">Convertir y Descargar
+                        Todo</button>
                 </div>
             </div>
         </section>
-        
+
         <aside class="sidebar">
             <div class="sticky-ad">
                 <div class="ad-zone sidebar-ad">
@@ -73,31 +83,50 @@
             <p data-i18n="modal_wait">Por favor espera. Esto depende de la velocidad de tu dispositivo.</p>
             <div class="loader"></div>
             <div class="ad-zone active-ad">
-                 <span class="ad-label">Advertisement</span>
-                 </div>
+                <span class="ad-label">Advertisement</span>
+            </div>
         </div>
     </div>
 
     <hr class="divider">
 
     <article id="seo-content" class="seo-container">
-        <h2 data-i18n="seo_h2_1">¿Cómo recortar y convertir un audio o video gratis sin programas?</h2>
-        <p data-i18n="seo_p_1">AudioTool Pro te otorga el poder de un estudio de grabación en tu navegador web. Esta herramienta online gratuita permite editar pistas de audio o extraer el sonido original puro desde archivos de video como MP4, MKV, AVI, y WEBM de manera instantánea. Su funcionamiento client-side garantiza total confidencialidad: tu música, audios y archivos jamás son enviados a la nube, ya que todo el trabajo intensivo se ejecuta directamente sobre el procesador de tu dispositivo (PC, Android, iOS).</p>
-        
-        <h3 data-i18n="seo_h3_1">Tipos de formato compatibles</h3>
-        <p data-i18n="seo_p_2">Nuestra app es líder por su integración universal de contenedores multimedia soportando entradas versátiles de sonido (WAV, MP3, OGG, FLAC) y los videos más pesados del mercado. El sistema de extracción de códecs se encarga de separar el canal auditivo del archivo nativo con sólo arrastrar los elementos hacia el recuadro central de carga del programa.</p>
-        
-        <h3 data-i18n="seo_h3_2">¿Cómo funcionan los controles de recorte con ondas de sonido?</h3>
-        <p data-i18n="seo_p_3">Nuestra novedosa interfaz te presentará un espectro auditivo (forma de onda - Waveform) por cada contenido en cola, donde podrás identificar visualmente los silencios y crestas. Para delinear con precisión robótica, cuentas con un par de barras deslizantes (Sliders interrelacionados) que determinarán el milisegundo de inicio exacto así como el momento en que se efectúa el corte final de tu ringtone o clip. Adicionalmente un pre-visualizador en tiempo real "▶ Reproducir" testeará individualmente qué porción de tu recorte de sonido escuchas antes de transformarlo y guardarlo.</p>
+        <h2 data-i18n="seo_h2_1">¿Cómo recortar y convertir audio o video gratis sin programas?</h2>
+        <p data-i18n="seo_p_1">AudioTool Pro convierte tu navegador en un editor de audio profesional. Recorta, convierte y extrae el audio de archivos de video (MP4, MKV, AVI, WEBM) directamente en tu dispositivo — sin subir nada a la nube, sin registros y sin instalar software. Tu música, podcasts y grabaciones nunca abandonan tu equipo.</p>
 
-        <h3 data-i18n="seo_h3_3">Conversión Masiva por Lotes y Exportaciones</h3>
-        <p data-i18n="seo_p_4">Con la meta de ayudarte a gestionar cientos de pistas simultáneas para proyectos, puedes aplicar múltiples ediciones a 5 canciones o elementos cargados a la vez y usar la Conversión de Lotes (Batch conversion). Solo define el «Formato de Salida Global» ya sea un liviano OGG para juegos web, un MP3 ubicuo, o bien un estricto e inmaculado WAV. Una vez definidos los cortes al compás con el ratón, presiona <strong>Convertir y Descargar Todo</strong>, nuestra máquina procesará las colas velozmente descargando en tu equipo todo como por arte de magia usando el ultra eficiente framework descentralizado <i>FFmpeg.wasm Single-Threaded</i>.</p>    
+        <h3 data-i18n="seo_h3_1">Tres pasos para editar tu audio</h3>
+        <ol>
+            <li data-i18n="seo_step_1">Arrastra tu archivo de audio o video al área de carga. Soporta MP3, WAV, OGG, FLAC, MP4, MKV, AVI y WEBM.</li>
+            <li data-i18n="seo_step_2">Usa los deslizadores de inicio y fin para recortar con precisión. La visualización de onda te ayuda a identificar silencios y secciones clave.</li>
+            <li data-i18n="seo_step_3">Elige el formato de salida (MP3, WAV, OGG o AAC) y haz clic en «Convertir y Descargar». El procesamiento ocurre localmente en tu CPU.</li>
+        </ol>
+
+        <h3 data-i18n="seo_h3_2">Formatos de audio y video compatibles</h3>
+        <p data-i18n="seo_p_2">Acepta las entradas de audio más populares (WAV, MP3, OGG, FLAC) además de contenedores de video (MP4, MKV, AVI, WEBM). El motor FFmpeg.wasm extrae automáticamente el canal de audio del video sin pérdida de calidad.</p>
+
+        <h3 data-i18n="seo_h3_3">Privacidad total: tecnología 100% client-side</h3>
+        <p data-i18n="seo_p_3">A diferencia de otros convertidores online, AudioTool Pro usa WebAssembly para ejecutar FFmpeg directamente en tu navegador. Ningún archivo se sube a servidores externos. Ideal para grabaciones sensibles, demos musicales inéditas o contenido privado que necesitas proteger.</p>
+
+        <h3 data-i18n="seo_h3_4">Conversión masiva por lotes</h3>
+        <p data-i18n="seo_p_4">Puedes cargar múltiples archivos de audio simultáneamente. Define un formato de salida global, ajusta los puntos de corte individuales para cada pista, y descárgalos todos con un solo clic. Perfecto para preparar ringtones, efectos de sonido o lotes de episodios de podcast.</p>
+
+        <h3 data-i18n="seo_h3_5">Preguntas frecuentes</h3>
+
+        <h4 data-i18n="seo_faq_q1">¿Cuál es el límite de tamaño de archivo?</h4>
+        <p data-i18n="seo_faq_a1">No hay límite por nuestra parte. La única restricción es la memoria RAM disponible en tu dispositivo, ya que todo se procesa localmente en tu navegador.</p>
+
+        <h4 data-i18n="seo_faq_q2">¿Funciona en el celular?</h4>
+        <p data-i18n="seo_faq_a2">Sí. AudioTool Pro es completamente responsivo y funciona en cualquier navegador moderno de Android o iOS. Los controles de recorte están optimizados para pantallas táctiles.</p>
+
+        <h4 data-i18n="seo_faq_q3">¿Es realmente gratis?</h4>
+        <p data-i18n="seo_faq_a3">Totalmente. El servicio es gratuito y sin registro. Funciona con tecnología WebAssembly que no genera costos de servidor porque todo el procesamiento ocurre en tu dispositivo.</p>
     </article>
 
     <footer>
-        <p>&copy; 2024 AudioTool Pro. 
-            <span data-i18n="footer_privacy">Privacidad 100% Client-Side.</span> 
-            | <a href="privacidad.html" style="color: #4F46E5; text-decoration: none; font-weight: bold;">Políticas de Privacidad</a>
+        <p>&copy; 2024 AudioTool Pro.
+            <span data-i18n="footer_privacy">Privacidad 100% Client-Side.</span>
+            | <a href="privacidad.html" style="color: #4F46E5; text-decoration: none; font-weight: bold;">Políticas de
+                Privacidad</a>
         </p>
     </footer>
 
@@ -109,4 +138,5 @@
         }
     </script>
 </body>
+
 </html>
