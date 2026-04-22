@@ -3,6 +3,7 @@
     "meta_desc": "Convierte audios a MP3, WAV, OGG y recórtalos directamente en tu navegador. Sin subir archivos.",
 
     "aria_lang_selector": "Cambiar idioma",
+    "nav_home": "Inicio",
     "nav_about": "Acerca de",
     "nav_contact": "Contacto",
 
@@ -41,8 +42,8 @@
     "dl_meta_title": "Descarga tus Audios | AudioTool Pro",
     "dl_meta_desc": "Descarga tus archivos de audio procesados con AudioTool Pro.",
     "dl_instruction": "Haz clic en el botón para descargar tus audios",
-    "dl_btn_download": "📥 Descargar Todos los Archivos",
-    "dl_btn_download_single": "📥 Descargar Archivo",
+    "dl_btn_download": "Descargar Todos los Archivos",
+    "dl_btn_download_single": "Descargar Archivo",
     "dl_preparing": "Preparando descarga...",
     "dl_error_download": "Error al preparar la descarga.",
     "dl_success_single": "¡Excelente! Tu audio ha sido procesado exitosamente.",

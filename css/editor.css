@@ -6,33 +6,36 @@
 
 /* ── Layout Grid ── */
 .layout-grid {
-    display: flex;
-    gap: 1.5rem;
-    max-width: 1100px;
+    display: block;
+    max-width: 780px;
     margin: 2rem auto;
     padding: 0 1rem;
-    align-items: flex-start;
 }
 
 .content-area {
-    flex: 1;
-    min-width: 0;
+    width: 100%;
+    margin: 0 auto;
     text-align: center;
 }
 
 .sidebar {
-    width: 300px;
-    flex-shrink: 0;
     display: none;
 }
 
-@media (min-width: 1024px) {
-    .sidebar { display: block; }
+@media (min-width: 1450px) {
+    .sidebar { 
+        display: block;
+        position: fixed;
+        right: 30px;
+        top: 100px;
+        width: 300px;
+        z-index: 50; 
+    }
 }
 
 .sticky-ad {
-    position: sticky;
-    top: 2rem;
+    position: relative;
+    /* ad will stick based on fixed sidebar */
 }
 
 /* ── Tool Box ── */

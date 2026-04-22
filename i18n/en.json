@@ -3,6 +3,7 @@
     "meta_desc": "Convert audio to MP3, WAV, OGG and trim them directly in your browser. No uploads.",
 
     "aria_lang_selector": "Change language",
+    "nav_home": "Home",
     "nav_about": "About",
     "nav_contact": "Contact",
 
@@ -41,8 +42,8 @@
     "dl_meta_title": "Download your Audio | AudioTool Pro",
     "dl_meta_desc": "Download your processed audio files with AudioTool Pro.",
     "dl_instruction": "Click the button to download your audio files",
-    "dl_btn_download": "📥 Download All Files",
-    "dl_btn_download_single": "📥 Download File",
+    "dl_btn_download": "Download All Files",
+    "dl_btn_download_single": "Download File",
     "dl_preparing": "Preparing download...",
     "dl_error_download": "Error preparing download.",
     "dl_success_single": "Excellent! Your audio has been processed successfully.",

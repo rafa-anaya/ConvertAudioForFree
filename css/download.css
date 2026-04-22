@@ -5,7 +5,7 @@
 
 /* ── Page Container ── */
 .download-container {
-    max-width: 780px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 0 1rem;
 }
@@ -33,8 +33,10 @@
 
 /* ── Main Download Button ── */
 .dl-btn-main {
-    display: inline-block;
-    background: linear-gradient(135deg, var(--primary-color), #818CF8);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--success);
     color: white;
     border: none;
     padding: 1rem 2.5rem;
@@ -42,8 +44,8 @@
     font-weight: 700;
     border-radius: 12px;
     cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
 }
 
 .dl-btn-main:hover {
