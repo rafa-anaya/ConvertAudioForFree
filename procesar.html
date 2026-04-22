@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es" id="html-root">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="proc_meta_title">Procesando Audio | AudioTool Pro</title>
+    <meta name="description" content="Procesando tus archivos de audio con FFmpeg.wasm">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/processor.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
+    <!-- FFmpeg.wasm — requires COEP/COOP headers (served only on this page) -->
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header>
+        <div class="logo">🎧 AudioTool Pro</div>
+        <select id="lang-selector" aria-label="Cambiar idioma">
+            <option value="es">Español</option>
+            <option value="en">English</option>
+        </select>
+    </header>
+
+    <main>
+        <div class="processor-container">
+            <h1 data-i18n="proc_title">Procesando tus audios...</h1>
+            <p class="processor-subtitle" data-i18n="proc_subtitle">
+                Tu dispositivo está trabajando. No cierres ni recargues esta pestaña.
+            </p>
+
+            <div class="proc-warning">
+                <span class="proc-warning-icon">⚠️</span>
+                <span data-i18n="proc_subtitle">No cierres ni recargues esta pestaña durante el procesamiento.</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-wrapper">
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progress-fill"></div>
+                </div>
+                <span class="progress-percentage" id="progress-percent">0%</span>
+            </div>
+
+            <!-- File Info -->
+            <div class="proc-info">
+                <div class="proc-info-row">
+                    <span class="proc-info-label" data-i18n="proc_current_file">Archivo actual:</span>
+                    <span class="proc-info-value" id="current-file-name">—</span>
+                </div>
+                <div class="proc-info-row">
+                    <span class="proc-info-label" id="file-progress">—</span>
+                    <span class="proc-info-value" id="estimated-time">—</span>
+                </div>
+            </div>
+
+            <!-- Status -->
+            <div id="proc-status-box" class="proc-status processing">
+                <span class="proc-spinner"></span>
+                <span data-i18n="proc_calculating">Calculando...</span>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 AudioTool Pro.
+            <span data-i18n="footer_privacy">Privacidad 100% Client-Side.</span>
+            | <a href="privacidad.html">Políticas de Privacidad</a>
+        </p>
+    </footer>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/idb-manager.js"></script>
+    <script src="js/processor.js"></script>
+</body>
+
+</html>

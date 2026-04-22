@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es" id="html-root">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="dl_meta_title">Descarga tus Audios | AudioTool Pro</title>
+    <meta name="description" content="Descarga tus archivos de audio procesados con AudioTool Pro.">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/download.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
+    <!-- JSZip for multi-file ZIP download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="logo"><a href="/">🎧 AudioTool Pro</a></div>
+        <select id="lang-selector" aria-label="Cambiar idioma">
+            <option value="es">Español</option>
+            <option value="en">English</option>
+        </select>
+    </header>
+
+    <!-- Ad #1: debajo del header -->
+    <div class="ad-zone passive-ad">
+        <span class="ad-label">Advertisement</span>
+    </div>
+
+    <main class="download-container">
+        <!-- Spacer to prevent accidental ad clicks -->
+        <div class="ad-spacer"></div>
+
+        <!-- Download Instruction + Button -->
+        <section class="dl-instruction">
+            <p data-i18n="dl_instruction">Haz clic en el botón para descargar tus audios</p>
+            <button id="dl-btn-main" class="dl-btn-main" data-i18n="dl_btn_download">
+                📥 Descargar Todos los Archivos
+            </button>
+        </section>
+
+        <!-- Spacer -->
+        <div class="ad-spacer-small"></div>
+
+        <!-- Dynamic Success Summary -->
+        <section class="dl-success" id="dl-success-section">
+            <span class="dl-success-icon">✅</span>
+            <h2 id="dl-success-text" data-i18n="dl_success_single">¡Procesamiento exitoso!</h2>
+        </section>
+
+        <!-- Stats Table -->
+        <div class="dl-stats-wrapper">
+            <table class="dl-stats-table">
+                <thead>
+                    <tr>
+                        <th data-i18n="dl_table_name">Archivo Original</th>
+                        <th class="col-original-format" data-i18n="dl_table_original_format">Formato Original</th>
+                        <th data-i18n="dl_table_new_format">Nuevo Formato</th>
+                        <th data-i18n="dl_table_original_size">Peso Original</th>
+                        <th data-i18n="dl_table_new_size">Nuevo Peso</th>
+                        <th class="col-savings" data-i18n="dl_table_savings">Ahorro</th>
+                        <th data-i18n="dl_table_action">Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="dl-stats-body">
+                    <!-- Dynamic rows -->
+                </tbody>
+                <tfoot>
+                    <tr id="dl-show-more-row" style="display: none;">
+                        <td colspan="7" class="dl-show-more-row">
+                            <button id="dl-show-more-btn" class="dl-btn-show-more" data-i18n="dl_show_more">
+                                Ver más
+                            </button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <!-- Support Section -->
+        <section class="dl-support">
+            <h3 data-i18n="dl_support_title">❤️ Apoya este proyecto</h3>
+            <p data-i18n="dl_support_text">
+                AudioTool Pro es completamente gratuito y sin registro. Los anuncios nos ayudan a mantener el sitio
+                en línea y cubrir los costos de desarrollo. Si usas un bloqueador de anuncios, considera desactivarlo
+                para este sitio — cada impresión cuenta.
+            </p>
+            <p class="dl-support-alt" data-i18n="dl_support_alt">
+                Si la herramienta te fue útil, también puedes invitarnos un café ☕
+            </p>
+            <!-- TODO: Replace href with actual donation link (Ko-fi / BuyMeACoffee) -->
+            <a href="#" class="dl-btn-donate" id="dl-donate-btn" data-i18n="dl_btn_donate">
+                ☕ Cómprame un café
+            </a>
+        </section>
+
+        <!-- Convert More -->
+        <div class="dl-convert-more">
+            <button id="dl-convert-more-btn" class="dl-btn-secondary" data-i18n="dl_btn_convert_more">
+                🔄 Convertir más archivos
+            </button>
+        </div>
+    </main>
+
+    <!-- Ad #2: antes del footer -->
+    <div class="ad-zone passive-ad">
+        <span class="ad-label">Advertisement</span>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 AudioTool Pro.
+            <span data-i18n="footer_privacy">Privacidad 100% Client-Side.</span>
+            | <a href="privacidad.html">Políticas de Privacidad</a>
+        </p>
+    </footer>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/idb-manager.js"></script>
+    <script src="js/download.js"></script>
+</body>
+
+</html>

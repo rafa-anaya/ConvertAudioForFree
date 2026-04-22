@@ -7,11 +7,10 @@
     <title data-i18n="meta_title">Convertidor y Recortador de Audio Universal</title>
     <meta name="description" data-i18n="meta_desc"
         content="Convierte y recorta audios gratis, sin límites y 100% privado en tu navegador.">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/editor.css">
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
-    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"
-        crossorigin="anonymous"></script>
     <script src="https://unpkg.com/wavesurfer.js@7.0.0/dist/wavesurfer.min.js"></script>
     <script src="https://unpkg.com/wavesurfer.js@7.0.0/dist/plugins/regions.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css"
@@ -22,7 +21,7 @@
 
 <body>
     <header>
-        <div class="logo">🎧 AudioTool Pro</div>
+        <div class="logo"><a href="/">🎧 AudioTool Pro</a></div>
         <select id="lang-selector" aria-label="Cambiar idioma">
             <option value="es">Español</option>
             <option value="en">English</option>
@@ -62,8 +61,7 @@
                 <div id="file-list" class="file-list"></div>
 
                 <div id="process-controls" class="controls hidden">
-                    <button id="process-btn" class="cta-button" data-i18n="btn_process">Convertir y Descargar
-                        Todo</button>
+                    <button id="process-btn" class="cta-button" data-i18n="btn_process">Procesar Archivos</button>
                 </div>
             </div>
         </section>
@@ -77,17 +75,6 @@
         </aside>
     </main>
 
-    <div id="processing-modal" class="modal hidden">
-        <div class="modal-content">
-            <h2 data-i18n="modal_processing">Procesando...</h2>
-            <p data-i18n="modal_wait">Por favor espera. Esto depende de la velocidad de tu dispositivo.</p>
-            <div class="loader"></div>
-            <div class="ad-zone active-ad">
-                <span class="ad-label">Advertisement</span>
-            </div>
-        </div>
-    </div>
-
     <hr class="divider">
 
     <article id="seo-content" class="seo-container">
@@ -98,7 +85,7 @@
         <ol>
             <li data-i18n="seo_step_1">Arrastra tu archivo de audio o video al área de carga. Soporta MP3, WAV, OGG, FLAC, MP4, MKV, AVI y WEBM.</li>
             <li data-i18n="seo_step_2">Usa los deslizadores de inicio y fin para recortar con precisión. La visualización de onda te ayuda a identificar silencios y secciones clave.</li>
-            <li data-i18n="seo_step_3">Elige el formato de salida (MP3, WAV, OGG o AAC) y haz clic en «Convertir y Descargar». El procesamiento ocurre localmente en tu CPU.</li>
+            <li data-i18n="seo_step_3">Elige el formato de salida (MP3, WAV, OGG o AAC) y haz clic en «Procesar». El procesamiento ocurre localmente en tu CPU.</li>
         </ol>
 
         <h3 data-i18n="seo_h3_2">Formatos de audio y video compatibles</h3>
@@ -125,14 +112,15 @@
     <footer>
         <p>&copy; 2024 AudioTool Pro.
             <span data-i18n="footer_privacy">Privacidad 100% Client-Side.</span>
-            | <a href="privacidad.html" style="color: #4F46E5; text-decoration: none; font-weight: bold;">Políticas de
-                Privacidad</a>
+            | <a href="privacidad.html">Políticas de Privacidad</a>
         </p>
     </footer>
 
-    <script src="app.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/idb-manager.js"></script>
+    <script src="js/editor.js"></script>
     <script>
-        // Registrar Service Worker
+        // Register Service Worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js');
         }
