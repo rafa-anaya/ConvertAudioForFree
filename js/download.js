@@ -206,17 +206,5 @@
     });
 
     // ── Step 8: React to language changes ──
-    document.addEventListener('langchange', () => {
-        // Re-render dynamic content
-        if (allFiles.length === 1) {
-            document.getElementById('dl-success-text').textContent = t('dl_success_single');
-            downloadBtn.textContent = t('dl_btn_download_single');
-        } else {
-            document.getElementById('dl-success-text').textContent =
-                t('dl_success_multiple', { count: allFiles.length });
-            downloadBtn.textContent = t('dl_btn_download');
-        }
-        renderTableRows(allFiles, showingAll ? null : MAX_VISIBLE_ROWS);
-    });
-
+    // Removed: Language changes now trigger a full page reload via i18n.js
 })();
