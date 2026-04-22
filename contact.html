@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es" id="html-root">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="contact_meta_title">Contacto | The Last Pixel</title>
+    <meta name="description" data-i18n="contact_meta_desc"
+        content="Ponte en contacto con The Last Pixel. Sugerencias, reportes de errores o simplemente un saludo.">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
+</head>
+
+<body>
+    <header>
+        <div class="logo"><a href="/">🎧 AudioTool Pro</a></div>
+        <nav class="header-nav">
+            <a href="about.html" data-i18n="nav_about">Acerca de</a>
+            <a href="contact.html" data-i18n="nav_contact">Contacto</a>
+        </nav>
+        <select id="lang-selector" aria-label="Cambiar idioma" data-i18n-aria="aria_lang_selector">
+            <option value="es">Español</option>
+            <option value="en">English</option>
+        </select>
+    </header>
+
+    <main class="page-container">
+        <!-- Hero -->
+        <section class="page-hero">
+            <h1 data-i18n="contact_title">Contacto</h1>
+            <p class="hero-subtitle" data-i18n="contact_subtitle">¿Tienes alguna sugerencia para una nueva herramienta, encontraste un error, o simplemente quieres saludar? ¡Me encantaría leerte!</p>
+        </section>
+
+        <!-- Contact Channels -->
+        <section class="page-card">
+            <h2 data-i18n="contact_channels_title">Canales de Contacto</h2>
+            <p data-i18n="contact_channels_intro">Puedes ponerte en contacto conmigo a través de los siguientes canales:</p>
+            <div class="contact-channels">
+                <div class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <div class="contact-item-content">
+                        <h3 data-i18n="contact_email_title">Correo electrónico</h3>
+                        <p><a href="mailto:pixelmayatools@gmail.com">pixelmayatools@gmail.com</a></p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">🎬</span>
+                    <div class="contact-item-content">
+                        <h3>YouTube</h3>
+                        <p data-i18n="contact_youtube_desc">También respondo dudas en los comentarios de los tutoriales.</p>
+                        <a href="https://www.youtube.com/@TheLastPixel" target="_blank" rel="noopener noreferrer" data-i18n="contact_youtube_link">Visitar canal →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Response Notice -->
+            <div class="notice-box">
+                <span class="notice-icon">⏳</span>
+                <p data-i18n="contact_notice">Nota: The Last Pixel es mantenido por un solo desarrollador independiente. Hago todo lo posible por leer y responder todos los mensajes rápidamente, pero puedo demorar entre 24 y 48 horas. ¡Muchas gracias por tu paciencia y apoyo!</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <nav class="footer-nav">
+            <a href="about.html" data-i18n="nav_about">Acerca de</a>
+            <span class="sep">|</span>
+            <a href="contact.html" data-i18n="nav_contact">Contacto</a>
+            <span class="sep">|</span>
+            <a href="privacidad.html" data-i18n="footer_link_privacy">Políticas de Privacidad</a>
+        </nav>
+        <p>&copy; 2024 AudioTool Pro.
+            <span data-i18n="footer_privacy">Privacidad 100% Client-Side.</span>
+        </p>
+    </footer>
+
+    <script src="js/i18n.js"></script>
+    <script>initLanguage();</script>
+</body>
+
+</html>

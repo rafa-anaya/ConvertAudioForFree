@@ -1,13 +1,16 @@
-const CACHE_NAME = 'audio-tool-v4';
+const CACHE_NAME = 'audio-tool-v5';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
     '/procesar.html',
     '/descarga.html',
+    '/about.html',
+    '/contact.html',
     '/css/shared.css',
     '/css/editor.css',
     '/css/processor.css',
     '/css/download.css',
+    '/css/pages.css',
     '/i18n/es.json',
     '/i18n/en.json',
     '/js/i18n.js',

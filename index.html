@@ -22,6 +22,10 @@
 <body>
     <header>
         <div class="logo"><a href="/">🎧 AudioTool Pro</a></div>
+        <nav class="header-nav">
+            <a href="about.html" data-i18n="nav_about">Acerca de</a>
+            <a href="contact.html" data-i18n="nav_contact">Contacto</a>
+        </nav>
         <select id="lang-selector" aria-label="Cambiar idioma" data-i18n-aria="aria_lang_selector">
             <option value="es">Español</option>
             <option value="en">English</option>
@@ -110,9 +114,15 @@
     </article>
 
     <footer>
+        <nav class="footer-nav">
+            <a href="about.html" data-i18n="nav_about">Acerca de</a>
+            <span class="sep">|</span>
+            <a href="contact.html" data-i18n="nav_contact">Contacto</a>
+            <span class="sep">|</span>
+            <a href="privacidad.html" data-i18n="footer_link_privacy">Políticas de Privacidad</a>
+        </nav>
         <p>&copy; 2024 AudioTool Pro.
             <span data-i18n="footer_privacy">Privacidad 100% Client-Side.</span>
-            | <a href="privacidad.html" data-i18n="footer_link_privacy">Políticas de Privacidad</a>
         </p>
     </footer>
 
