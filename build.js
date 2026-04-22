@@ -159,7 +159,7 @@ function build() {
     // Handle sw.js: inject generated routes
     if (fs.existsSync('sw.js')) {
         let swContent = fs.readFileSync('sw.js', 'utf8');
-        const allRoutes = ['/'];
+        const allRoutes = [];
         SUPPORTED_LANGS.forEach(lang => {
             htmlFiles.forEach(file => {
                 if (file === 'privacidad.html' && lang === 'en') return;

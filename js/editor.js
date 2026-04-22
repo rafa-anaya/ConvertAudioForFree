@@ -86,34 +86,34 @@ function renderFileList() {
                     <strong>${item.file.name}</strong> <small>(${sizeMB} MB)</small>
                 </div>
                 <div class="file-actions">
-                    <button class="btn-edit" onclick="event.stopPropagation(); toggleAccordion('${item.id}')" data-i18n="btn_edit">⚙️ Editar</button>
-                    <button class="btn-delete" onclick="event.stopPropagation(); removeAudio('${item.id}', event)" data-i18n="btn_delete">🗑️ Eliminar</button>
+                    <button class="btn-edit" onclick="event.stopPropagation(); toggleAccordion('${item.id}')">⚙️ ${t('btn_edit')}</button>
+                    <button class="btn-delete" onclick="event.stopPropagation(); removeAudio('${item.id}', event)">🗑️ ${t('btn_delete')}</button>
                 </div>
             </div>
             <div class="file-content" id="content_${item.id}">
                 <div class="editor-box">
-                    <div class="editor-text" data-i18n="editor_hint">Ajusta los deslizadores para definir el segmento de audio a recortar.</div>
+                    <div class="editor-text">${t('editor_hint')}</div>
                     
                     <div id="waveform_${item.id}" class="waveform-ui"></div>
                     
                     <div class="slider-controls">
                         <div class="slider-group">
                             <div class="slider-label-row">
-                                <label data-i18n="lbl_trim_start">Inicio</label>
+                                <label>${t('lbl_trim_start')}</label>
                                 <span id="val_start_${item.id}" class="slider-value">0.0s</span>
                             </div>
                             <div id="slider_start_${item.id}"></div>
                         </div>
                         <div class="slider-group">
                             <div class="slider-label-row">
-                                <label data-i18n="lbl_trim_end">Fin</label>
+                                <label>${t('lbl_trim_end')}</label>
                                 <span id="val_end_${item.id}" class="slider-value">0.0s</span>
                             </div>
                             <div id="slider_end_${item.id}"></div>
                         </div>
                     </div>
                     
-                    <button id="play_${item.id}" class="play-btn" data-i18n="btn_play">▶ Reproducir</button>
+                    <button id="play_${item.id}" class="play-btn">▶ ${t('btn_play')}</button>
                 </div>
             </div>
         `;
@@ -140,9 +140,6 @@ function renderFileList() {
     if (dropText) {
         dropText.textContent = `${t('files_loaded')} ${filesState.length}`;
     }
-
-    // Re-apply i18n to dynamically created elements
-    applyLanguage();
 }
 
 // ── Remove specific audio ──
