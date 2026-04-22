@@ -12,7 +12,7 @@ const dicts = {
 };
 
 const SUPPORTED_LANGS = ['es', 'en'];
-const DEFAULT_LANG = 'es';
+const DEFAULT_LANG = 'en';
 
 function build() {
     // 1. Clean dist
@@ -102,11 +102,11 @@ function build() {
 
             // Inject hreflang tags before </head>
             const originalFilenameForHreflang = file === 'privacidad-en.html' ? 'privacidad.html' : file;
-            let hreflangTags = SUPPORTED_LANGS.map(l => 
+            let hreflangTags = SUPPORTED_LANGS.map(l =>
                 `    <link rel="alternate" hreflang="${l}" href="/${l}/${originalFilenameForHreflang === 'index.html' ? '' : originalFilenameForHreflang}">`
             ).join('\n');
             hreflangTags += `\n    <link rel="alternate" hreflang="x-default" href="/${DEFAULT_LANG}/${originalFilenameForHreflang === 'index.html' ? '' : originalFilenameForHreflang}">\n`;
-            
+
             html = html.replace('</head>', `${hreflangTags}</head>`);
 
             // Adjust paths to assets
@@ -165,18 +165,18 @@ function build() {
             htmlFiles.forEach(file => {
                 if (file === 'privacidad.html' && lang === 'en') return;
                 if (file === 'privacidad-en.html' && lang === 'es') return;
-                
+
                 const outputFilename = file === 'privacidad-en.html' ? 'privacidad.html' : file;
                 const cleanName = outputFilename.replace('.html', '');
                 allRoutes.push(`/${lang}/${cleanName === 'index' ? '' : cleanName}`);
             });
         });
-        
+
         // Find ASSETS_TO_CACHE = [ ... ] and append allRoutes
         // This is a simple regex replacement for the array.
         // Or we can just prepend the routes to the existing array.
         swContent = swContent.replace(/const ASSETS_TO_CACHE = \[/, `const ASSETS_TO_CACHE = [\n    ${allRoutes.map(r => `'${r}'`).join(',\n    ')},`);
-        
+
         // We must remove the old html paths from the array to avoid 404s
         htmlFiles.forEach(file => {
             swContent = swContent.replace(new RegExp(`'/${file}',?\\s*`, 'g'), '');
