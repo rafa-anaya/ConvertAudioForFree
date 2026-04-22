@@ -149,7 +149,7 @@ function build() {
     });
 
     // 6. Copy other specific files and update sw.js
-    const filesToCopy = ['_headers', 'favicon.ico'];
+    const filesToCopy = ['_headers', 'favicon.ico', 'serve.json'];
     filesToCopy.forEach(f => {
         if (fs.existsSync(f)) {
             fs.copyFileSync(f, path.join(DIST_DIR, f));
