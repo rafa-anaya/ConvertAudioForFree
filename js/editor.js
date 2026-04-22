@@ -14,7 +14,7 @@ const fileListContainer = document.getElementById('file-list');
 const processControls = document.getElementById('process-controls');
 
 // ── Cleanup residual IndexedDB on load (anti-duplicate fallback) ──
-AudioDB.clearAll().catch(() => {});
+AudioDB.clearAll().catch(() => { });
 
 // ── Drop Zone Events ──
 dropZone.addEventListener('click', () => audioInput.click());
@@ -86,8 +86,8 @@ function renderFileList() {
                     <strong>${item.file.name}</strong> <small>(${sizeMB} MB)</small>
                 </div>
                 <div class="file-actions">
-                    <button class="btn-edit" onclick="event.stopPropagation(); toggleAccordion('${item.id}')">⚙️ ${t('btn_edit')}</button>
-                    <button class="btn-delete" onclick="event.stopPropagation(); removeAudio('${item.id}', event)">🗑️ ${t('btn_delete')}</button>
+                    <button class="btn-edit" onclick="event.stopPropagation(); toggleAccordion('${item.id}')"> ${t('btn_edit')}</button>
+                    <button class="btn-delete" onclick="event.stopPropagation(); removeAudio('${item.id}', event)"> ${t('btn_delete')}</button>
                 </div>
             </div>
             <div class="file-content" id="content_${item.id}">
@@ -113,7 +113,7 @@ function renderFileList() {
                         </div>
                     </div>
                     
-                    <button id="play_${item.id}" class="play-btn">▶ ${t('btn_play')}</button>
+                    <button id="play_${item.id}" class="play-btn"> ${t('btn_play')}</button>
                 </div>
             </div>
         `;
@@ -399,8 +399,8 @@ document.getElementById('process-btn').addEventListener('click', async () => {
 
         await AudioDB.savePendingJobs(jobs);
 
-        // Redirect to processing page (relative path to stay in language folder)
-        window.location.href = 'procesar.html';
+        // Redirect to processing page (clean url)
+        window.location.href = 'procesar';
     } catch (error) {
         console.error('Error saving to IndexedDB:', error);
         btn.disabled = false;

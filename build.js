@@ -94,7 +94,8 @@ function build() {
                     return `href="/${lang}/"`;
                 }
                 if (url.endsWith('.html')) {
-                    return `href="/${lang}/${url}"`;
+                    const cleanUrl = url.replace('.html', '');
+                    return `href="/${lang}/${cleanUrl}"`;
                 }
                 return match;
             });
@@ -166,7 +167,8 @@ function build() {
                 if (file === 'privacidad-en.html' && lang === 'es') return;
                 
                 const outputFilename = file === 'privacidad-en.html' ? 'privacidad.html' : file;
-                allRoutes.push(`/${lang}/${outputFilename === 'index.html' ? '' : outputFilename}`);
+                const cleanName = outputFilename.replace('.html', '');
+                allRoutes.push(`/${lang}/${cleanName === 'index' ? '' : cleanName}`);
             });
         });
         

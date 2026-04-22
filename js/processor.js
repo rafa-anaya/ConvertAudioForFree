@@ -172,7 +172,7 @@
     currentFileName.textContent = t('proc_redirecting');
 
     setTimeout(() => {
-        window.location.href = 'descarga.html';
+        window.location.href = 'descarga';
     }, 1500);
 
 })();
