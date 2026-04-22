@@ -162,7 +162,11 @@ function build() {
         const allRoutes = ['/'];
         SUPPORTED_LANGS.forEach(lang => {
             htmlFiles.forEach(file => {
-                allRoutes.push(`/${lang}/${file === 'index.html' ? '' : file}`);
+                if (file === 'privacidad.html' && lang === 'en') return;
+                if (file === 'privacidad-en.html' && lang === 'es') return;
+                
+                const outputFilename = file === 'privacidad-en.html' ? 'privacidad.html' : file;
+                allRoutes.push(`/${lang}/${outputFilename === 'index.html' ? '' : outputFilename}`);
             });
         });
         
