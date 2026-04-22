@@ -1,4 +1,4 @@
-const CACHE_NAME = 'audio-tool-v8';
+const CACHE_NAME = 'audio-tool-v9';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
@@ -50,7 +50,8 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    if (url.origin !== self.location.origin) {
+    const reqUrl = new URL(event.request.url);
+    if (reqUrl.origin !== self.location.origin) {
         return;
     }
 
