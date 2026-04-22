@@ -32,7 +32,7 @@
     if (!allFiles || allFiles.length === 0) {
         document.getElementById('dl-success-text').textContent = t('dl_no_files');
         setTimeout(() => {
-            window.location.href = '/';
+            window.location.href = './';
         }, 2000);
         return;
     }
@@ -189,7 +189,7 @@
         convertMoreBtn.addEventListener('click', async (e) => {
             e.preventDefault();
             await AudioDB.clearAll().catch(() => {});
-            window.location.href = '/';
+            window.location.href = './';
         });
     }
 

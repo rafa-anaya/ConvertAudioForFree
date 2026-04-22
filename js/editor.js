@@ -402,8 +402,8 @@ document.getElementById('process-btn').addEventListener('click', async () => {
 
         await AudioDB.savePendingJobs(jobs);
 
-        // Redirect to processing page
-        window.location.href = '/procesar.html';
+        // Redirect to processing page (relative path to stay in language folder)
+        window.location.href = 'procesar.html';
     } catch (error) {
         console.error('Error saving to IndexedDB:', error);
         btn.disabled = false;

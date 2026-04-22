@@ -52,7 +52,7 @@
     if (!jobs || jobs.length === 0) {
         updateStatus('proc_no_files', 'error');
         setTimeout(() => {
-            window.location.href = '/';
+            window.location.href = './';
         }, 2000);
         return;
     }
@@ -172,7 +172,7 @@
     currentFileName.textContent = t('proc_redirecting');
 
     setTimeout(() => {
-        window.location.href = '/descarga.html';
+        window.location.href = 'descarga.html';
     }, 1500);
 
 })();
