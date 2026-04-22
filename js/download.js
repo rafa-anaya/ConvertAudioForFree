@@ -7,7 +7,7 @@
     'use strict';
 
     // ── Initialize Language ──
-    initLanguage();
+    await initLanguage();
 
     // ── DOM References ──
     const downloadBtn = document.getElementById('dl-btn-main');
@@ -137,7 +137,7 @@
         if (allFiles.length === 0) return;
 
         downloadBtn.disabled = true;
-        downloadBtn.textContent = currentLang === 'es' ? 'Preparando descarga...' : 'Preparing download...';
+        downloadBtn.textContent = t('dl_preparing');
 
         try {
             if (allFiles.length === 1) {
@@ -173,9 +173,7 @@
             }
         } catch (err) {
             console.error('Download error:', err);
-            alert(currentLang === 'es'
-                ? 'Error al preparar la descarga.'
-                : 'Error preparing download.');
+            alert(t('dl_error_download'));
         } finally {
             downloadBtn.disabled = false;
             if (allFiles.length === 1) {

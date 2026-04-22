@@ -16,7 +16,7 @@
     const statusBox = document.getElementById('proc-status-box');
 
     // ── Initialize Language ──
-    initLanguage();
+    await initLanguage();
 
     // ── Helper: Update UI ──
     function updateProgress(percent) {
@@ -61,7 +61,7 @@
 
     // ── Step 2: Load FFmpeg ──
     updateStatus('proc_file_progress', 'processing', { current: 0, total: totalFiles });
-    currentFileName.textContent = currentLang === 'es' ? 'Cargando motor de procesamiento...' : 'Loading processing engine...';
+    currentFileName.textContent = t('proc_loading_engine');
 
     const { createFFmpeg, fetchFile } = FFmpeg;
     const ffmpeg = createFFmpeg({

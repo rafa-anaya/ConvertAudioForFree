@@ -376,7 +376,7 @@ document.getElementById('process-btn').addEventListener('click', async () => {
 
     const btn = document.getElementById('process-btn');
     btn.disabled = true;
-    btn.textContent = currentLang === 'es' ? 'Preparando...' : 'Preparing...';
+    btn.textContent = t('btn_preparing');
 
     // Destroy all wavesurfers before processing
     destroyOtherWaveSurfers(null);
@@ -408,11 +408,12 @@ document.getElementById('process-btn').addEventListener('click', async () => {
         console.error('Error saving to IndexedDB:', error);
         btn.disabled = false;
         btn.textContent = t('btn_process');
-        alert(currentLang === 'es'
-            ? 'Error al preparar los archivos. Intenta de nuevo.'
-            : 'Error preparing files. Please try again.');
+        alert(t('editor_error_preparing'));
     }
 });
 
 // ── Initialize ──
-initLanguage();
+initLanguage().then(() => {
+    // Re-render file list if files were added before translations loaded
+    if (filesState.length > 0) renderFileList();
+});
