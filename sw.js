@@ -1,4 +1,4 @@
-const CACHE_NAME = 'audio-tool-v9';
+const CACHE_NAME = 'audio-tool-v10';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
@@ -57,7 +57,21 @@ self.addEventListener('fetch', (event) => {
 
     event.respondWith(
         caches.match(event.request).then((response) => {
-            return response || fetch(event.request).then((fetchRes) => {
+            if (response) {
+                if (event.request.url.includes('/procesar')) {
+                    const newHeaders = new Headers(response.headers);
+                    newHeaders.set('Cross-Origin-Embedder-Policy', 'require-corp');
+                    newHeaders.set('Cross-Origin-Opener-Policy', 'same-origin');
+                    return new Response(response.body, {
+                        status: response.status,
+                        statusText: response.statusText,
+                        headers: newHeaders
+                    });
+                }
+                return response;
+            }
+            
+            return fetch(event.request).then((fetchRes) => {
                 if (!fetchRes || fetchRes.status !== 200 || (fetchRes.type !== 'basic' && fetchRes.type !== 'cors')) {
                     return fetchRes;
                 }
@@ -65,6 +79,18 @@ self.addEventListener('fetch', (event) => {
                 caches.open(CACHE_NAME).then((cache) => {
                     cache.put(event.request, responseToCache);
                 });
+                
+                if (event.request.url.includes('/procesar')) {
+                    const newHeaders = new Headers(fetchRes.headers);
+                    newHeaders.set('Cross-Origin-Embedder-Policy', 'require-corp');
+                    newHeaders.set('Cross-Origin-Opener-Policy', 'same-origin');
+                    return new Response(fetchRes.body, {
+                        status: fetchRes.status,
+                        statusText: fetchRes.statusText,
+                        headers: newHeaders
+                    });
+                }
+                
                 return fetchRes;
             });
         })
