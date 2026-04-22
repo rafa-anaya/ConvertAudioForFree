@@ -40,11 +40,11 @@
     // ── Step 2: Render success message ──
     if (allFiles.length === 1) {
         document.getElementById('dl-success-text').textContent = t('dl_success_single');
-        downloadBtn.textContent = t('dl_btn_download_single');
+        downloadBtn.querySelector('span').textContent = t('dl_btn_download_single');
     } else {
         document.getElementById('dl-success-text').textContent =
             t('dl_success_multiple', { count: allFiles.length });
-        downloadBtn.textContent = t('dl_btn_download');
+        downloadBtn.querySelector('span').textContent = t('dl_btn_download');
     }
 
     // ── Step 3: Render stats table ──
