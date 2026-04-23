@@ -1,0 +1,297 @@
+/* ============================================
+   PAGES — About & Contact
+   Shared styles for static content pages
+   ============================================ */
+
+/* ── Page Container ── */
+.page-container {
+    max-width: 780px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem;
+}
+
+/* ── Hero Section ── */
+.page-hero {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background: linear-gradient(135deg, #EEF2FF 0%, #F5F3FF 50%, #FDF2F8 100%);
+    border-radius: 16px;
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.page-hero h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.page-hero .hero-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* ── Content Card ── */
+.page-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.page-card h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid #EEF2FF;
+}
+
+.page-card p {
+    color: #4b5563;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: 0.75rem;
+}
+
+.page-card p:last-child {
+    margin-bottom: 0;
+}
+
+/* ── Pillars Grid ── */
+.pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 1rem;
+}
+
+.pillar-item {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    background: #F9FAFB;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pillar-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08);
+}
+
+.pillar-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.pillar-item h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 0.4rem;
+}
+
+.pillar-item p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+/* ── CTA Button ── */
+.cta-youtube {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: #FF0000;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.cta-youtube:hover {
+    background: #cc0000;
+    transform: translateY(-1px);
+    text-decoration: none;
+}
+
+.cta-youtube svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+/* ── Contact Options ── */
+.contact-channels {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 0.75rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: #F9FAFB;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    transition: border-color 0.2s ease;
+}
+
+.contact-item:hover {
+    border-color: var(--primary-color);
+}
+
+.contact-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #EEF2FF;
+    border-radius: 8px;
+}
+
+.contact-item-content {
+    flex: 1;
+}
+
+.contact-item-content h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
+}
+
+.contact-item-content p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+}
+
+.contact-item-content a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.contact-item-content a:hover {
+    text-decoration: underline;
+}
+
+/* ── Response Notice ── */
+.notice-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: #FFFBEB;
+    border: 1px solid #FDE68A;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+}
+
+.notice-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.notice-box p {
+    font-size: 0.85rem;
+    color: #92400E;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+/* ── Footer Navigation ── */
+.footer-nav {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+}
+
+.footer-nav a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.footer-nav a:hover {
+    text-decoration: underline;
+}
+
+.footer-nav .sep {
+    color: var(--text-secondary);
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+    .page-hero {
+        padding: 2rem 1rem;
+    }
+
+    .page-hero h1 {
+        font-size: 1.5rem;
+    }
+
+    .page-card {
+        padding: 1.5rem 1.25rem;
+    }
+
+    .pillars-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .pillar-item {
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .pillar-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0;
+    }
+
+    .pillar-text {
+        flex: 1;
+    }
+
+    .contact-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+
+    .contact-icon {
+        width: auto;
+        height: auto;
+        background: transparent;
+        padding: 0;
+    }
+}

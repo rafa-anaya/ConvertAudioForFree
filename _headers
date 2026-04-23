@@ -1,3 +1,7 @@
-/*
-  Cross-Origin-Embedder-Policy: credentialless
+/es/procesar
+  Cross-Origin-Embedder-Policy: require-corp
+  Cross-Origin-Opener-Policy: same-origin
+
+/en/procesar
+  Cross-Origin-Embedder-Policy: require-corp
   Cross-Origin-Opener-Policy: same-origin

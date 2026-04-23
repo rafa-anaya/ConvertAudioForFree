@@ -1,0 +1,336 @@
+/* ============================================
+   EDITOR STYLES — AudioTool Pro (index.html)
+   Layout grid, tool-box, drop-zone, accordion,
+   waveform, sliders, play button
+   ============================================ */
+
+/* ── Layout Grid ── */
+.layout-grid {
+    display: block;
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.content-area {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.sidebar {
+    display: none;
+}
+
+@media (min-width: 1450px) {
+    .sidebar { 
+        display: block;
+        position: fixed;
+        right: 30px;
+        top: 100px;
+        width: 300px;
+        z-index: 50; 
+    }
+}
+
+.sticky-ad {
+    position: relative;
+    /* ad will stick based on fixed sidebar */
+}
+
+/* ── Tool Box ── */
+.tool-box {
+    background: var(--surface-color);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color);
+}
+
+/* ── Drop Zone ── */
+.drop-zone {
+    border: 2px dashed var(--primary-color);
+    border-radius: 8px;
+    padding: 3rem 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.drop-zone:hover {
+    background: #EEF2FF;
+}
+
+/* ── Controls ── */
+.controls {
+    margin-top: 2rem;
+    text-align: left;
+}
+
+.time-controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.control-group {
+    margin-bottom: 1rem;
+    flex: 1;
+}
+
+.control-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.control-group input,
+.control-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+/* ── CTA Button ── */
+.cta-button {
+    width: 100%;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 1rem;
+}
+
+.cta-button:hover {
+    background: var(--primary-hover);
+}
+
+/* ============ FILE LIST (Accordion) ============ */
+.file-list {
+    margin-top: 2rem;
+    text-align: left;
+}
+
+.file-item {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.file-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--surface-color);
+    cursor: pointer;
+}
+
+.file-header:hover {
+    background: #f9fafb;
+}
+
+.file-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.btn-edit {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-delete {
+    background: var(--danger);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    background: var(--danger-hover);
+}
+
+.file-content {
+    display: none;
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    background: #fafafa;
+}
+
+.file-item.active .file-content {
+    display: block;
+}
+
+/* ============ DARK EDITOR (WaveSurfer) ============ */
+.editor-box {
+    background: var(--editor-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: left;
+}
+
+.editor-text {
+    color: var(--editor-text);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.waveform-ui {
+    position: relative;
+    width: 100%;
+    border: 1px solid var(--editor-border);
+    background: var(--editor-surface);
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    padding: 10px 0;
+    overflow: hidden;
+    min-height: 100px;
+}
+
+/* WaveSurfer Region Handles */
+.waveform-ui [data-resize] {
+    width: 14px !important;
+    background: var(--accent-warm) !important;
+    border-radius: 4px !important;
+    cursor: col-resize !important;
+    opacity: 0.9 !important;
+    transition: opacity 0.15s !important;
+    z-index: 10 !important;
+}
+
+.waveform-ui [data-resize]:hover {
+    opacity: 1 !important;
+    width: 16px !important;
+}
+
+/* ============ SLIDER CONTROLS (noUiSlider themed) ============ */
+.slider-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.slider-group {
+    flex: 1 1 220px;
+    min-width: 0;
+}
+
+.slider-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.slider-label-row label {
+    color: #c0caf5;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.slider-value {
+    color: var(--accent-warm);
+    font-size: 0.85rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    min-width: 50px;
+    text-align: right;
+}
+
+/* noUiSlider Theme Override (Dark) */
+.slider-group .noUi-target {
+    background: var(--editor-input-bg);
+    border: 1px solid #414868;
+    border-radius: 6px;
+    box-shadow: none;
+    height: 10px;
+}
+
+.slider-group .noUi-connect {
+    background: var(--primary-color);
+    border-radius: 6px;
+}
+
+.slider-group .noUi-handle {
+    width: 22px !important;
+    height: 22px !important;
+    border-radius: 50% !important;
+    background: var(--accent-warm) !important;
+    border: 2px solid #fff !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
+    cursor: grab !important;
+    top: -7px !important;
+    right: -11px !important;
+}
+
+.slider-group .noUi-handle:active {
+    cursor: grabbing !important;
+}
+
+.slider-group .noUi-handle::before,
+.slider-group .noUi-handle::after {
+    display: none;
+}
+
+/* Play Button */
+.play-btn {
+    width: 100%;
+    background: #3b4261;
+    color: #fff;
+    border: 1px solid #414868;
+    border-radius: 8px;
+    padding: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.play-btn:hover {
+    background: #4f5882;
+}
+
+/* ============ RESPONSIVE (Editor) ============ */
+@media (max-width: 600px) {
+    .waveform-ui { min-height: 80px; }
+    .slider-group { flex: 1 1 100%; }
+
+    /* Hide region handles on mobile — sliders only */
+    .waveform-ui [data-resize] {
+        display: none !important;
+    }
+    .waveform-ui [data-resize-left],
+    .waveform-ui [data-resize-right] {
+        display: none !important;
+        pointer-events: none !important;
+    }
+
+    .slider-group .noUi-handle {
+        width: 28px !important;
+        height: 28px !important;
+        top: -10px !important;
+        right: -14px !important;
+    }
+
+    .editor-box { padding: 1rem; }
+
+    .file-header {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+}

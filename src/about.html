@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es" id="html-root">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="about_meta_title">Acerca de Nosotros | The Last Pixel</title>
+    <meta name="description" data-i18n="about_meta_desc"
+        content="Conoce la historia detrás de The Last Pixel: herramientas gratuitas y privadas para creadores, desarrolladores y artistas digitales.">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="icon" href="public/Favicon.png" type="image/png">
+</head>
+
+<body>
+    <header>
+        <div class="logo"><a href="/">🎧 AudioTool Pro</a></div>
+        <nav class="header-nav">
+            <a href="/" data-i18n="nav_home">Inicio</a>
+            <a href="about.html" data-i18n="nav_about">Acerca de</a>
+            <a href="contact.html" data-i18n="nav_contact">Contacto</a>
+        </nav>
+        <select id="lang-selector" aria-label="Cambiar idioma" data-i18n-aria="aria_lang_selector">
+            <option value="es">Español</option>
+            <option value="en">English</option>
+        </select>
+    </header>
+
+    <main class="page-container">
+        <!-- Hero -->
+        <section class="page-hero">
+            <h1 data-i18n="about_title">Acerca de The Last Pixel</h1>
+            <p class="hero-subtitle" data-i18n="about_subtitle">Herramientas creadas por necesidad, compartidas para la comunidad.</p>
+        </section>
+
+        <!-- Story -->
+        <section class="page-card">
+            <h2 data-i18n="about_story_title">Nuestra Historia</h2>
+            <p data-i18n="about_story_p1">The Last Pixel comenzó como un canal de YouTube dedicado a compartir tutoriales de Blender y diseño 3D. Sin embargo, en mi día a día como creador de contenido y desarrollador, me topaba con un problema constante: perder tiempo buscando herramientas sencillas para convertir audios, editar formatos o ajustar archivos para mis proyectos.</p>
+            <p data-i18n="about_story_p2">La mayoría de los sitios web estaban llenos de spam, requerían registros molestos o limitaban el tamaño de mis archivos. Así que decidí dejar de buscar y empezar a programar mis propias soluciones.</p>
+        </section>
+
+        <!-- Pillars -->
+        <section class="page-card">
+            <h2 data-i18n="about_pillars_title">¿Por qué usar estas herramientas?</h2>
+            <p data-i18n="about_pillars_intro">Aquí encontrarás una colección en crecimiento de herramientas web diseñadas específicamente para creadores, desarrolladores indie y artistas digitales. Esta es mi filosofía:</p>
+            <div class="pillars-grid">
+                <div class="pillar-item">
+                    <span class="pillar-icon">💰</span>
+                    <div class="pillar-text">
+                        <h3 data-i18n="about_pillar_free_title">100% Gratuitas</h3>
+                        <p data-i18n="about_pillar_free_desc">El proyecto se mantiene gracias a la publicidad en la página, para que tú no tengas que pagar ni registrarte jamás.</p>
+                    </div>
+                </div>
+                <div class="pillar-item">
+                    <span class="pillar-icon">🔒</span>
+                    <div class="pillar-text">
+                        <h3 data-i18n="about_pillar_privacy_title">Privacidad Total</h3>
+                        <p data-i18n="about_pillar_privacy_desc">Tus archivos nunca salen de tu computadora. Todas las herramientas procesan la información localmente en tu propio navegador.</p>
+                    </div>
+                </div>
+                <div class="pillar-item">
+                    <span class="pillar-icon">⚡</span>
+                    <div class="pillar-text">
+                        <h3 data-i18n="about_pillar_simple_title">Fáciles y Directas</h3>
+                        <p data-i18n="about_pillar_simple_desc">Entras, resuelves tu problema y sigues con tu proceso creativo sin interrupciones.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA YouTube -->
+        <section class="page-card" style="text-align: center;">
+            <h2 data-i18n="about_cta_title">Únete a la comunidad</h2>
+            <p data-i18n="about_cta_text">Además de desarrollar estas herramientas, comparto mi proceso, tutoriales y guías de uso en YouTube.</p>
+            <a href="https://www.youtube.com/@TheLastPixel" target="_blank" rel="noopener noreferrer" class="cta-youtube">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                <span data-i18n="about_cta_btn">Ver canal en YouTube</span>
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <nav class="footer-nav">
+            <a href="about.html" data-i18n="nav_about">Acerca de</a>
+            <span class="sep">|</span>
+            <a href="contact.html" data-i18n="nav_contact">Contacto</a>
+            <span class="sep">|</span>
+            <a href="privacidad.html" data-i18n="footer_link_privacy">Políticas de Privacidad</a>
+        </nav>
+        <p>&copy; 2024 AudioTool Pro.
+            <span data-i18n="footer_privacy">Privacidad 100% Client-Side.</span>
+        </p>
+    </footer>
+
+    <script src="js/i18n.js"></script>
+    <script>initLanguage();</script>
+</body>
+
+</html>

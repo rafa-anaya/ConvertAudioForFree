@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
 
     let filePath = '.' + req.url;
     if (filePath === './') {
-        filePath = './Index.html';
+        filePath = './index.html';
     }
 
     const extname = String(path.extname(filePath)).toLowerCase();
@@ -39,11 +39,17 @@ const server = http.createServer((req, res) => {
                 res.end(`Error de servidor: ${error.code}`);
             }
         } else {
-            res.writeHead(200, {
-                'Content-Type': contentType,
-                'Cross-Origin-Embedder-Policy': 'credentialless',
-                'Cross-Origin-Opener-Policy': 'same-origin'
-            });
+            const headers = { 'Content-Type': contentType };
+
+            // COEP/COOP headers ONLY for the processing page
+            // Required for SharedArrayBuffer (FFmpeg.wasm multithreaded)
+            // NOT applied to other pages to allow AdSense iframes
+            if (req.url.includes('procesar')) {
+                headers['Cross-Origin-Embedder-Policy'] = 'require-corp';
+                headers['Cross-Origin-Opener-Policy'] = 'same-origin';
+            }
+
+            res.writeHead(200, headers);
             res.end(content, 'utf-8');
         }
     });

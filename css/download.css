@@ -1,0 +1,304 @@
+/* ============================================
+   DOWNLOAD STYLES — AudioTool Pro (descarga.html)
+   Download page layout, stats table, support section
+   ============================================ */
+
+/* ── Page Container ── */
+.download-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* ── Ad Spacer (prevents accidental clicks) ── */
+.ad-spacer {
+    height: 40px;
+}
+
+.ad-spacer-small {
+    height: 30px;
+}
+
+/* ── Instruction Section ── */
+.dl-instruction {
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.dl-instruction p {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    margin-bottom: 1.25rem;
+}
+
+/* ── Main Download Button ── */
+.dl-btn-main {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--success);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+}
+
+.dl-btn-main:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+}
+
+.dl-btn-main:active {
+    transform: translateY(0);
+}
+
+/* ── Success Message ── */
+.dl-success {
+    text-align: center;
+    margin: 2rem 0 1.5rem;
+}
+
+.dl-success-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.dl-success h2 {
+    font-size: 1.4rem;
+    color: var(--success);
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.dl-success p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+/* ── Stats Table ── */
+.dl-stats-wrapper {
+    background: var(--surface-color);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.dl-stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.dl-stats-table thead {
+    background: #F3F4F6;
+}
+
+.dl-stats-table th {
+    padding: 0.75rem 0.6rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+.dl-stats-table td {
+    padding: 0.7rem 0.6rem;
+    border-top: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+
+.dl-stats-table tbody tr:hover {
+    background: #FAFAFA;
+}
+
+/* File name in table */
+.dl-file-name {
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+/* Savings badge */
+.dl-savings-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.dl-savings-badge.positive {
+    background: var(--success-light);
+    color: var(--success);
+}
+
+.dl-savings-badge.negative {
+    background: #FEE2E2;
+    color: var(--danger);
+}
+
+/* Individual download button */
+.dl-btn-individual {
+    background: none;
+    border: 1px solid var(--border-color);
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.15s;
+}
+
+.dl-btn-individual:hover {
+    background: #EEF2FF;
+}
+
+/* Show more / less */
+.dl-show-more-row td {
+    text-align: center;
+    padding: 0.75rem;
+}
+
+.dl-btn-show-more {
+    background: none;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.4rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: background 0.15s;
+}
+
+.dl-btn-show-more:hover {
+    background: #EEF2FF;
+}
+
+/* ── Support Section ── */
+.dl-support {
+    background: var(--surface-color);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.dl-support h3 {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 0.75rem;
+}
+
+.dl-support p {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.dl-support-alt {
+    font-style: italic;
+    font-size: 0.88rem !important;
+    color: #9CA3AF !important;
+    margin-top: 1rem !important;
+}
+
+.dl-btn-donate {
+    display: inline-block;
+    background: #FBCA04;
+    color: #1a1a1a;
+    border: none;
+    padding: 0.7rem 1.8rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    text-decoration: none;
+    margin-top: 0.5rem;
+}
+
+.dl-btn-donate:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(251, 202, 4, 0.4);
+}
+
+/* ── Convert More Button ── */
+.dl-convert-more {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.dl-btn-secondary {
+    display: inline-block;
+    background: var(--surface-color);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    text-decoration: none;
+}
+
+.dl-btn-secondary:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .download-container {
+        padding: 0 0.75rem;
+    }
+
+    .dl-btn-main {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.05rem;
+    }
+
+    /* Table: hide less important columns on small screens */
+    .dl-stats-table .col-original-format,
+    .dl-stats-table .col-savings {
+        display: none;
+    }
+
+    .dl-file-name {
+        max-width: 120px;
+    }
+
+    .dl-stats-table th,
+    .dl-stats-table td {
+        padding: 0.5rem 0.4rem;
+        font-size: 0.8rem;
+    }
+
+    .dl-support {
+        padding: 1.5rem 1rem;
+    }
+
+    .dl-btn-secondary {
+        width: 100%;
+    }
+}

@@ -1,0 +1,32 @@
+{
+  "headers": [
+    {
+      "source": "/es/procesar",
+      "headers": [
+        { "key": "Cross-Origin-Embedder-Policy", "value": "require-corp" },
+        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" }
+      ]
+    },
+    {
+      "source": "/es/procesar.html",
+      "headers": [
+        { "key": "Cross-Origin-Embedder-Policy", "value": "require-corp" },
+        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" }
+      ]
+    },
+    {
+      "source": "/en/procesar",
+      "headers": [
+        { "key": "Cross-Origin-Embedder-Policy", "value": "require-corp" },
+        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" }
+      ]
+    },
+    {
+      "source": "/en/procesar.html",
+      "headers": [
+        { "key": "Cross-Origin-Embedder-Policy", "value": "require-corp" },
+        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" }
+      ]
+    }
+  ]
+}
