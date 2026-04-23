@@ -13,6 +13,7 @@ const dicts = {
 
 const SUPPORTED_LANGS = ['es', 'en'];
 const DEFAULT_LANG = 'en';
+const SITE_URL = 'https://audiotoolpro.com'; // Cambiar por el dominio real
 
 function build() {
     // 1. Clean dist
@@ -150,7 +151,7 @@ function build() {
     });
 
     // 6. Copy other specific files and update sw.js
-    const filesToCopy = ['_headers', 'favicon.ico', 'serve.json', 'ads.txt'];
+    const filesToCopy = ['_headers', 'favicon.ico', 'favicon.png', 'serve.json', 'ads.txt'];
     filesToCopy.forEach(f => {
         if (fs.existsSync(f)) {
             fs.copyFileSync(f, path.join(DIST_DIR, f));
@@ -172,12 +173,8 @@ function build() {
             });
         });
 
-        // Find ASSETS_TO_CACHE = [ ... ] and append allRoutes
-        // This is a simple regex replacement for the array.
-        // Or we can just prepend the routes to the existing array.
         swContent = swContent.replace(/const ASSETS_TO_CACHE = \[/, `const ASSETS_TO_CACHE = [\n    ${allRoutes.map(r => `'${r}'`).join(',\n    ')},`);
 
-        // We must remove the old html paths from the array to avoid 404s
         htmlFiles.forEach(file => {
             swContent = swContent.replace(new RegExp(`'/${file}',?\\s*`, 'g'), '');
         });
@@ -185,7 +182,59 @@ function build() {
         fs.writeFileSync(path.join(DIST_DIR, 'sw.js'), swContent);
     }
 
+    // 7. Generate Sitemap & Robots.txt
+    generateSitemap(htmlFiles);
+
     console.log('Build completed successfully!');
+}
+
+function generateSitemap(htmlFiles) {
+    const urls = [];
+    const now = new Date().toISOString().split('T')[0];
+
+    SUPPORTED_LANGS.forEach(lang => {
+        htmlFiles.forEach(file => {
+            if (file === 'privacidad.html' && lang === 'en') return;
+            if (file === 'privacidad-en.html' && lang === 'es') return;
+
+            const outputFilename = file === 'privacidad-en.html' ? 'privacidad.html' : file;
+            const cleanName = outputFilename.replace('.html', '');
+            const pagePath = `/${lang}/${cleanName === 'index' ? '' : cleanName}`;
+
+            let urlEntry = `  <url>\n    <loc>${SITE_URL}${pagePath}</loc>\n    <lastmod>${now}</lastmod>\n`;
+
+            // Add alternates
+            SUPPORTED_LANGS.forEach(l => {
+                const altOutputFilename = outputFilename; // They both share the same output name now
+                const altCleanName = altOutputFilename.replace('.html', '');
+                const altPath = `/${l}/${altCleanName === 'index' ? '' : altCleanName}`;
+                urlEntry += `    <xhtml:link rel="alternate" hreflang="${l}" href="${SITE_URL}${altPath}"/>\n`;
+            });
+
+            // Add x-default
+            const defPath = `/${DEFAULT_LANG}/${outputFilename.replace('.html', '') === 'index' ? '' : outputFilename.replace('.html', '')}`;
+            urlEntry += `    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE_URL}${defPath}"/>\n`;
+
+            urlEntry += `  </url>`;
+            urls.push(urlEntry);
+        });
+    });
+
+    const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${urls.join('\n')}
+</urlset>`;
+
+    fs.writeFileSync(path.join(DIST_DIR, 'sitemap.xml'), sitemapContent);
+
+    // Generate robots.txt
+    const robotsContent = `User-agent: *
+Allow: /
+
+Sitemap: ${SITE_URL}/sitemap.xml`;
+    fs.writeFileSync(path.join(DIST_DIR, 'robots.txt'), robotsContent);
+    console.log('Sitemap and robots.txt generated.');
 }
 
 function copyDirSync(src, dest) {
