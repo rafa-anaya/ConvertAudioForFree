@@ -1,4 +1,4 @@
-const CACHE_NAME = 'audio-tool-v11';
+const CACHE_NAME = 'audio-tool-v12';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
