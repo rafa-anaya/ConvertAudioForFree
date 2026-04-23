@@ -1,4 +1,4 @@
-const CACHE_NAME = 'audio-tool-v10';
+const CACHE_NAME = 'audio-tool-v11';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
@@ -70,7 +70,7 @@ self.addEventListener('fetch', (event) => {
                 }
                 return response;
             }
-            
+
             return fetch(event.request).then((fetchRes) => {
                 if (!fetchRes || fetchRes.status !== 200 || (fetchRes.type !== 'basic' && fetchRes.type !== 'cors')) {
                     return fetchRes;
@@ -79,7 +79,7 @@ self.addEventListener('fetch', (event) => {
                 caches.open(CACHE_NAME).then((cache) => {
                     cache.put(event.request, responseToCache);
                 });
-                
+
                 if (event.request.url.includes('/procesar')) {
                     const newHeaders = new Headers(fetchRes.headers);
                     newHeaders.set('Cross-Origin-Embedder-Policy', 'require-corp');
@@ -90,7 +90,7 @@ self.addEventListener('fetch', (event) => {
                         headers: newHeaders
                     });
                 }
-                
+
                 return fetchRes;
             });
         })
