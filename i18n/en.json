@@ -119,5 +119,6 @@
     "contact_notice": "Note: The Last Pixel is maintained by a single independent developer. I do my best to read and reply to all messages quickly, but it may take 24 to 48 hours. Thank you so much for your patience and support!",
 
     "footer_privacy": "100% Client-Side Privacy. No files are uploaded to our servers.",
-    "footer_link_privacy": "Privacy Policy"
+    "footer_link_privacy": "Privacy Policy",
+    "footer_link_cookies": "Cookie Policy"
 }
