@@ -43,7 +43,22 @@ self.addEventListener('activate', (event) => {
     self.clients.claim();
 });
 
-// Fetch: cache-first with network fallback
+// Fetch: network-first with cache fallback (offline support).
+// Network-first guarantees returning visitors always get the latest deploy.
+function withIsolationHeaders(request, response) {
+    // COEP/COOP for the processing page (required for SharedArrayBuffer / FFmpeg.wasm).
+    // Injected here because static hosts like GitHub Pages can't set custom headers.
+    if (!request.url.includes('/procesar')) return response;
+    const newHeaders = new Headers(response.headers);
+    newHeaders.set('Cross-Origin-Embedder-Policy', 'require-corp');
+    newHeaders.set('Cross-Origin-Opener-Policy', 'same-origin');
+    return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: newHeaders
+    });
+}
+
 self.addEventListener('fetch', (event) => {
     // Only process GET requests with http/https schemes
     if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) {
@@ -56,43 +71,18 @@ self.addEventListener('fetch', (event) => {
     }
 
     event.respondWith(
-        caches.match(event.request).then((response) => {
-            if (response) {
-                if (event.request.url.includes('/procesar')) {
-                    const newHeaders = new Headers(response.headers);
-                    newHeaders.set('Cross-Origin-Embedder-Policy', 'require-corp');
-                    newHeaders.set('Cross-Origin-Opener-Policy', 'same-origin');
-                    return new Response(response.body, {
-                        status: response.status,
-                        statusText: response.statusText,
-                        headers: newHeaders
-                    });
+        fetch(event.request, { cache: 'no-cache' })
+            .then((fetchRes) => {
+                if (fetchRes && fetchRes.status === 200 && fetchRes.type === 'basic') {
+                    const responseToCache = fetchRes.clone();
+                    caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseToCache));
                 }
-                return response;
-            }
-
-            return fetch(event.request).then((fetchRes) => {
-                if (!fetchRes || fetchRes.status !== 200 || (fetchRes.type !== 'basic' && fetchRes.type !== 'cors')) {
-                    return fetchRes;
-                }
-                const responseToCache = fetchRes.clone();
-                caches.open(CACHE_NAME).then((cache) => {
-                    cache.put(event.request, responseToCache);
-                });
-
-                if (event.request.url.includes('/procesar')) {
-                    const newHeaders = new Headers(fetchRes.headers);
-                    newHeaders.set('Cross-Origin-Embedder-Policy', 'require-corp');
-                    newHeaders.set('Cross-Origin-Opener-Policy', 'same-origin');
-                    return new Response(fetchRes.body, {
-                        status: fetchRes.status,
-                        statusText: fetchRes.statusText,
-                        headers: newHeaders
-                    });
-                }
-
-                return fetchRes;
-            });
-        })
+                return withIsolationHeaders(event.request, fetchRes);
+            })
+            .catch(() =>
+                caches.match(event.request).then((cached) =>
+                    cached ? withIsolationHeaders(event.request, cached) : Response.error()
+                )
+            )
     );
 });

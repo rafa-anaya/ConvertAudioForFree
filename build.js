@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const SRC_DIR = path.join(__dirname, 'src');
 const DIST_DIR = path.join(__dirname, 'dist');
@@ -179,6 +180,13 @@ function build() {
             swContent = swContent.replace(new RegExp(`'/${file}',?\\s*`, 'g'), '');
         });
 
+        // Auto-version the cache with a hash of the built content.
+        // Any change in dist => new sw.js bytes => browsers install the new SW
+        // and the activate handler deletes the old caches.
+        const buildHash = hashDir(DIST_DIR);
+        swContent = swContent.replace(/const CACHE_NAME = '[^']*';/, `const CACHE_NAME = 'audio-tool-${buildHash}';`);
+        console.log(`Service worker cache: audio-tool-${buildHash}`);
+
         fs.writeFileSync(path.join(DIST_DIR, 'sw.js'), swContent);
     }
 
@@ -235,6 +243,23 @@ Allow: /
 Sitemap: ${SITE_URL}/sitemap.xml`;
     fs.writeFileSync(path.join(DIST_DIR, 'robots.txt'), robotsContent);
     console.log('Sitemap and robots.txt generated.');
+}
+
+function hashDir(dir) {
+    const hash = crypto.createHash('sha256');
+    const walk = (d) => {
+        fs.readdirSync(d, { withFileTypes: true })
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .forEach(entry => {
+                const full = path.join(d, entry.name);
+                if (entry.isDirectory()) return walk(full);
+                if (full === path.join(DIST_DIR, 'sw.js')) return;
+                hash.update(path.relative(dir, full));
+                hash.update(fs.readFileSync(full));
+            });
+    };
+    walk(dir);
+    return hash.digest('hex').slice(0, 10);
 }
 
 function copyDirSync(src, dest) {

@@ -18,12 +18,36 @@ const MIME_TYPES = {
     '.wasm': 'application/wasm'
 };
 
+// Serve the built site (run `node build.js` first)
+const ROOT = path.join(__dirname, 'dist');
+
+function resolveFile(urlPath) {
+    let decoded;
+    try {
+        decoded = decodeURIComponent(urlPath);
+    } catch {
+        return null;
+    }
+    let filePath = path.normalize(path.join(ROOT, decoded));
+    if (!filePath.startsWith(ROOT)) return null; // path traversal guard
+
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+        filePath = path.join(filePath, 'index.html');
+    } else if (!fs.existsSync(filePath) && !path.extname(filePath)) {
+        filePath += '.html'; // clean URLs: /en/about -> /en/about.html
+    }
+    return filePath;
+}
+
 const server = http.createServer((req, res) => {
     console.log(`${req.method} ${req.url}`);
 
-    let filePath = '.' + req.url;
-    if (filePath === './') {
-        filePath = './index.html';
+    const cleanUrl = req.url.split('?')[0];
+    const filePath = resolveFile(cleanUrl);
+    if (!filePath) {
+        res.writeHead(400);
+        res.end('Ruta inválida');
+        return;
     }
 
     const extname = String(path.extname(filePath)).toLowerCase();

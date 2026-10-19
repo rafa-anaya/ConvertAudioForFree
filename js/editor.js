@@ -55,11 +55,20 @@ function handleFiles(files) {
             start: 0,
             end: 0,
             duration: 0,
+            zoom: 0,
             wsInstance: null
         });
     });
 
     renderFileList();
+}
+
+function formatTime(seconds) {
+    if (isNaN(seconds) || seconds < 0) seconds = 0;
+    const mins = Math.floor(seconds / 60);
+    const secs = (seconds % 60);
+    const secsFormatted = secs.toFixed(1).padStart(4, '0');
+    return `${mins}:${secsFormatted}`;
 }
 
 function renderFileList() {
@@ -93,27 +102,79 @@ function renderFileList() {
             <div class="file-content" id="content_${item.id}">
                 <div class="editor-box">
                     <div class="editor-text">${t('editor_hint')}</div>
+
+                    <!-- Toolbar superior: Zoom y duración seleccionada -->
+                    <div class="waveform-toolbar">
+                        <div class="zoom-controls">
+                            <span class="zoom-title">🔍 ${t('zoom_label') || 'Zoom'}:</span>
+                            <button type="button" class="btn-ctrl" id="zoom_out_${item.id}" title="${t('zoom_out') || 'Alejar zoom'}">−</button>
+                            <input type="range" class="zoom-range" id="zoom_range_${item.id}" min="0" max="300" value="${item.zoom || 0}" step="10" title="${t('zoom_label') || 'Zoom'}">
+                            <button type="button" class="btn-ctrl" id="zoom_in_${item.id}" title="${t('zoom_in') || 'Acercar zoom'}">+</button>
+                            <button type="button" class="btn-ctrl btn-zoom-fit" id="zoom_fit_${item.id}" title="${t('zoom_fit') || 'Ajustar a pantalla'}">${t('zoom_fit') || 'Ajustar'}</button>
+                            <span id="zoom_val_${item.id}" class="zoom-level">${(item.zoom || 0) === 0 ? (t('zoom_fit') || 'Ajustar') : `${item.zoom} px/s`}</span>
+                        </div>
+                        <div class="time-selection-badge">
+                            <span>${t('lbl_selection') || 'Selección:'}</span>
+                            <strong id="val_diff_${item.id}">0.0s (0:00.0)</strong>
+                        </div>
+                    </div>
                     
-                    <div id="waveform_${item.id}" class="waveform-ui"></div>
+                    <!-- Contenedor WaveSurfer -->
+                    <div id="waveform_${item.id}" class="waveform-ui" title="Usa Ctrl + Rueda del ratón para hacer zoom"></div>
+
+                    <!-- Barra de Transporte y Reproducción -->
+                    <div class="playback-toolbar">
+                        <div class="playback-time">
+                            <span id="cur_time_${item.id}" class="time-cur">0:00.0</span>
+                            <span class="time-sep">/</span>
+                            <span id="tot_time_${item.id}" class="time-tot">${formatTime(item.duration)}</span>
+                        </div>
+                        <div class="playback-actions">
+                            <button type="button" id="seek_back_${item.id}" class="btn-playback-ctrl" title="Retroceder 1s">⏪ -1s</button>
+                            <button type="button" id="play_${item.id}" class="play-btn-primary">▶ ${t('btn_play')}</button>
+                            <button type="button" id="seek_fwd_${item.id}" class="btn-playback-ctrl" title="Avanzar 1s">+1s ⏩</button>
+                            <button type="button" id="stop_${item.id}" class="btn-playback-ctrl" title="Detener">⏹</button>
+                        </div>
+                    </div>
                     
+                    <!-- Deslizadores y Botones de Precisión -->
                     <div class="slider-controls">
                         <div class="slider-group">
                             <div class="slider-label-row">
                                 <label>${t('lbl_trim_start')}</label>
-                                <span id="val_start_${item.id}" class="slider-value">0.0s</span>
+                                <div class="slider-time-inputs">
+                                    <span id="val_start_${item.id}" class="slider-value">0.0s (0:00.0)</span>
+                                    <input type="number" id="input_start_${item.id}" class="time-number-input" step="0.1" min="0" value="${item.start.toFixed(1)}" title="Segundos de inicio">
+                                </div>
                             </div>
                             <div id="slider_start_${item.id}"></div>
+                            <div class="step-btn-row">
+                                <button type="button" class="btn-step" id="step_start_m1_${item.id}" title="Retroceder 1 segundo">-1s</button>
+                                <button type="button" class="btn-step" id="step_start_m01_${item.id}" title="Retroceder 0.1s (fracción)">-0.1s</button>
+                                <button type="button" class="btn-step" id="step_start_p01_${item.id}" title="Avanzar 0.1s (fracción)">+0.1s</button>
+                                <button type="button" class="btn-step" id="step_start_p1_${item.id}" title="Avanzar 1 segundo">+1s</button>
+                                <button type="button" class="btn-step btn-step-seek" id="seek_start_${item.id}" title="${t('btn_seek_start') || 'Ver inicio en onda'}">📍</button>
+                            </div>
                         </div>
+
                         <div class="slider-group">
                             <div class="slider-label-row">
                                 <label>${t('lbl_trim_end')}</label>
-                                <span id="val_end_${item.id}" class="slider-value">0.0s</span>
+                                <div class="slider-time-inputs">
+                                    <span id="val_end_${item.id}" class="slider-value">0.0s (0:00.0)</span>
+                                    <input type="number" id="input_end_${item.id}" class="time-number-input" step="0.1" min="0" value="${item.end.toFixed(1)}" title="Segundos de fin">
+                                </div>
                             </div>
                             <div id="slider_end_${item.id}"></div>
+                            <div class="step-btn-row">
+                                <button type="button" class="btn-step" id="step_end_m1_${item.id}" title="Retroceder 1 segundo">-1s</button>
+                                <button type="button" class="btn-step" id="step_end_m01_${item.id}" title="Retroceder 0.1s (fracción)">-0.1s</button>
+                                <button type="button" class="btn-step" id="step_end_p01_${item.id}" title="Avanzar 0.1s (fracción)">+0.1s</button>
+                                <button type="button" class="btn-step" id="step_end_p1_${item.id}" title="Avanzar 1 segundo">+1s</button>
+                                <button type="button" class="btn-step btn-step-seek" id="seek_end_${item.id}" title="${t('btn_seek_end') || 'Ver fin en onda'}">📍</button>
+                            </div>
                         </div>
                     </div>
-                    
-                    <button id="play_${item.id}" class="play-btn"> ${t('btn_play')}</button>
                 </div>
             </div>
         `;
@@ -130,7 +191,16 @@ function renderFileList() {
                     item.end = item.duration;
                 }
                 const valEnd = document.getElementById(`val_end_${item.id}`);
-                if (valEnd) valEnd.textContent = item.end.toFixed(1) + 's';
+                if (valEnd) valEnd.textContent = `${item.end.toFixed(1)}s (${formatTime(item.end)})`;
+                const inputEnd = document.getElementById(`input_end_${item.id}`);
+                if (inputEnd) inputEnd.value = item.end.toFixed(1);
+                const totTime = document.getElementById(`tot_time_${item.id}`);
+                if (totTime) totTime.textContent = formatTime(item.duration);
+                const valDiff = document.getElementById(`val_diff_${item.id}`);
+                if (valDiff) {
+                    const diff = Math.max(0, item.end - item.start);
+                    valDiff.textContent = `${diff.toFixed(1)}s (${formatTime(diff)})`;
+                }
                 URL.revokeObjectURL(tempUrl);
             };
         }
@@ -219,10 +289,47 @@ function toggleAccordion(id) {
 
 function initWaveSurfer(item) {
     const waveformDivID = `#waveform_${item.id}`;
+    const waveformDiv = document.getElementById(`waveform_${item.id}`);
 
-    let updatingFromSlider = false;
-    let updatingFromRegion = false;
+    let isUpdating = false;
     const isMobile = window.matchMedia('(max-width: 600px)').matches;
+
+    // Element references
+    const sliderStartEl = document.getElementById(`slider_start_${item.id}`);
+    const sliderEndEl = document.getElementById(`slider_end_${item.id}`);
+    const valStartSpan = document.getElementById(`val_start_${item.id}`);
+    const valEndSpan = document.getElementById(`val_end_${item.id}`);
+    const valDiffSpan = document.getElementById(`val_diff_${item.id}`);
+    const inputStartEl = document.getElementById(`input_start_${item.id}`);
+    const inputEndEl = document.getElementById(`input_end_${item.id}`);
+
+    // Zoom element references
+    const zoomRange = document.getElementById(`zoom_range_${item.id}`);
+    const zoomInBtn = document.getElementById(`zoom_in_${item.id}`);
+    const zoomOutBtn = document.getElementById(`zoom_out_${item.id}`);
+    const zoomFitBtn = document.getElementById(`zoom_fit_${item.id}`);
+    const zoomValSpan = document.getElementById(`zoom_val_${item.id}`);
+
+    // Transport element references
+    const btnPlay = document.getElementById(`play_${item.id}`);
+    const btnStop = document.getElementById(`stop_${item.id}`);
+    const btnSeekBack = document.getElementById(`seek_back_${item.id}`);
+    const btnSeekFwd = document.getElementById(`seek_fwd_${item.id}`);
+    const curTimeSpan = document.getElementById(`cur_time_${item.id}`);
+    const totTimeSpan = document.getElementById(`tot_time_${item.id}`);
+
+    // Step buttons references
+    const btnStartM1 = document.getElementById(`step_start_m1_${item.id}`);
+    const btnStartM01 = document.getElementById(`step_start_m01_${item.id}`);
+    const btnStartP01 = document.getElementById(`step_start_p01_${item.id}`);
+    const btnStartP1 = document.getElementById(`step_start_p1_${item.id}`);
+    const btnSeekStart = document.getElementById(`seek_start_${item.id}`);
+
+    const btnEndM1 = document.getElementById(`step_end_m1_${item.id}`);
+    const btnEndM01 = document.getElementById(`step_end_m01_${item.id}`);
+    const btnEndP01 = document.getElementById(`step_end_p01_${item.id}`);
+    const btnEndP1 = document.getElementById(`step_end_p1_${item.id}`);
+    const btnSeekEnd = document.getElementById(`seek_end_${item.id}`);
 
     item.wsInstance = WaveSurfer.create({
         container: waveformDivID,
@@ -238,53 +345,223 @@ function initWaveSurfer(item) {
 
     const wsRegions = item.wsInstance.registerPlugin(WaveSurfer.Regions.create());
 
-    const sliderStartEl = document.getElementById(`slider_start_${item.id}`);
-    const sliderEndEl = document.getElementById(`slider_end_${item.id}`);
-    const valStartSpan = document.getElementById(`val_start_${item.id}`);
-    const valEndSpan = document.getElementById(`val_end_${item.id}`);
-    const btnPlay = document.getElementById(`play_${item.id}`);
+    // ── Central Synchronized Trim Update Function ──
+    function updateTrim(source, proposedStart, proposedEnd, centerTarget) {
+        if (isUpdating) return;
+        isUpdating = true;
 
-    const syncRegionFromSliders = () => {
-        if (updatingFromRegion) return;
-        updatingFromSlider = true;
+        const dur = item.duration || 1;
+        let s = proposedStart !== undefined ? proposedStart : item.start;
+        let e = proposedEnd !== undefined ? proposedEnd : item.end;
 
-        let nStart = parseFloat(sliderStartEl.noUiSlider.get());
-        let nEnd = parseFloat(sliderEndEl.noUiSlider.get());
+        // Round to 1 decimal place to eliminate floating point glitches
+        s = Math.round(s * 10) / 10;
+        e = Math.round(e * 10) / 10;
 
-        if (nStart < 0) nStart = 0;
-        if (nEnd > item.duration) nEnd = item.duration;
-        if (nStart >= nEnd) nStart = Math.max(0, nEnd - 0.5);
+        if (s < 0) s = 0;
+        if (e > dur) e = dur;
+        if (s >= e) {
+            if (source === 'start' || source === 'input_start' || source === 'step_start') {
+                s = Math.max(0, Math.round((e - 0.1) * 10) / 10);
+            } else {
+                e = Math.min(dur, Math.round((s + 0.1) * 10) / 10);
+            }
+        }
 
-        item.start = nStart;
-        item.end = nEnd;
-        valStartSpan.textContent = nStart.toFixed(1) + 's';
-        valEndSpan.textContent = nEnd.toFixed(1) + 's';
+        item.start = s;
+        item.end = e;
 
+        // Update display text and inputs
+        if (valStartSpan) valStartSpan.textContent = `${s.toFixed(1)}s (${formatTime(s)})`;
+        if (valEndSpan) valEndSpan.textContent = `${e.toFixed(1)}s (${formatTime(e)})`;
+        if (valDiffSpan) {
+            const diff = Math.max(0, e - s);
+            valDiffSpan.textContent = `${diff.toFixed(1)}s (${formatTime(diff)})`;
+        }
+
+        if (inputStartEl && source !== 'input_start') inputStartEl.value = s.toFixed(1);
+        if (inputEndEl && source !== 'input_end') inputEndEl.value = e.toFixed(1);
+
+        // Update noUiSliders
+        if (sliderStartEl && sliderStartEl.noUiSlider && source !== 'slider_start') {
+            sliderStartEl.noUiSlider.set(s);
+        }
+        if (sliderEndEl && sliderEndEl.noUiSlider && source !== 'slider_end') {
+            sliderEndEl.noUiSlider.set(e);
+        }
+
+        // Update WaveSurfer Region
         const regions = wsRegions.getRegions();
         if (regions.length > 0) {
-            regions[0].setOptions({
-                start: item.start,
-                end: item.end
-            });
+            regions[0].setOptions({ start: s, end: e });
         } else {
             wsRegions.addRegion({
-                start: item.start,
-                end: item.end,
+                start: s,
+                end: e,
                 color: 'rgba(255, 158, 100, 0.2)',
                 drag: !isMobile,
                 resize: !isMobile
             });
         }
 
-        updatingFromSlider = false;
-    };
+        // Scroll / Center Waveform viewport to target point if requested
+        if (centerTarget === 'start') {
+            const prog = dur > 0 ? Math.min(1, Math.max(0, s / dur)) : 0;
+            item.wsInstance.seekTo(prog);
+            if (curTimeSpan) curTimeSpan.textContent = formatTime(s);
+        } else if (centerTarget === 'end') {
+            const prog = dur > 0 ? Math.min(1, Math.max(0, e / dur)) : 0;
+            item.wsInstance.seekTo(prog);
+            if (curTimeSpan) curTimeSpan.textContent = formatTime(e);
+        }
 
+        isUpdating = false;
+    }
+
+    // ── Zoom Handler ──
+    function applyZoom(zoomPx) {
+        const clampedZoom = Math.max(0, Math.min(300, Math.round(zoomPx)));
+        item.zoom = clampedZoom;
+
+        if (zoomRange) zoomRange.value = clampedZoom;
+        if (zoomValSpan) {
+            zoomValSpan.textContent = clampedZoom === 0 ? (t('zoom_fit') || 'Ajustar') : `${clampedZoom} px/s`;
+        }
+
+        if (item.wsInstance) {
+            item.wsInstance.zoom(clampedZoom);
+        }
+    }
+
+    if (zoomRange) {
+        zoomRange.addEventListener('input', (e) => applyZoom(parseFloat(e.target.value) || 0));
+    }
+    if (zoomInBtn) {
+        zoomInBtn.addEventListener('click', () => applyZoom((item.zoom || 0) === 0 ? 20 : (item.zoom || 0) + 20));
+    }
+    if (zoomOutBtn) {
+        zoomOutBtn.addEventListener('click', () => applyZoom((item.zoom || 0) - 20));
+    }
+    if (zoomFitBtn) {
+        zoomFitBtn.addEventListener('click', () => applyZoom(0));
+    }
+
+    // Zoom with Mouse Wheel (Ctrl / Cmd / Alt + Wheel)
+    if (waveformDiv) {
+        waveformDiv.addEventListener('wheel', (e) => {
+            if (e.ctrlKey || e.metaKey || e.altKey) {
+                e.preventDefault();
+                const delta = e.deltaY < 0 ? 20 : -20;
+                applyZoom((item.zoom || 0) + delta);
+            }
+        }, { passive: false });
+    }
+
+    // ── Precision Step Buttons for Start ──
+    if (btnStartM1) btnStartM1.addEventListener('click', () => updateTrim('step_start', item.start - 1.0, undefined, 'start'));
+    if (btnStartM01) btnStartM01.addEventListener('click', () => updateTrim('step_start', item.start - 0.1, undefined, 'start'));
+    if (btnStartP01) btnStartP01.addEventListener('click', () => updateTrim('step_start', item.start + 0.1, undefined, 'start'));
+    if (btnStartP1) btnStartP1.addEventListener('click', () => updateTrim('step_start', item.start + 1.0, undefined, 'start'));
+    if (btnSeekStart) {
+        btnSeekStart.addEventListener('click', () => {
+            const prog = item.duration > 0 ? Math.min(1, Math.max(0, item.start / item.duration)) : 0;
+            item.wsInstance.seekTo(prog);
+            if (curTimeSpan) curTimeSpan.textContent = formatTime(item.start);
+        });
+    }
+
+    // ── Precision Step Buttons for End ──
+    if (btnEndM1) btnEndM1.addEventListener('click', () => updateTrim('step_end', undefined, item.end - 1.0, 'end'));
+    if (btnEndM01) btnEndM01.addEventListener('click', () => updateTrim('step_end', undefined, item.end - 0.1, 'end'));
+    if (btnEndP01) btnEndP01.addEventListener('click', () => updateTrim('step_end', undefined, item.end + 0.1, 'end'));
+    if (btnEndP1) btnEndP1.addEventListener('click', () => updateTrim('step_end', undefined, item.end + 1.0, 'end'));
+    if (btnSeekEnd) {
+        btnSeekEnd.addEventListener('click', () => {
+            const prog = item.duration > 0 ? Math.min(1, Math.max(0, item.end / item.duration)) : 0;
+            item.wsInstance.seekTo(prog);
+            if (curTimeSpan) curTimeSpan.textContent = formatTime(item.end);
+        });
+    }
+
+    // ── Direct Number Inputs ──
+    if (inputStartEl) {
+        inputStartEl.addEventListener('change', () => {
+            const val = parseFloat(inputStartEl.value);
+            updateTrim('input_start', isNaN(val) ? 0 : val, undefined, 'start');
+        });
+        inputStartEl.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') inputStartEl.blur();
+        });
+    }
+    if (inputEndEl) {
+        inputEndEl.addEventListener('change', () => {
+            const val = parseFloat(inputEndEl.value);
+            updateTrim('input_end', undefined, isNaN(val) ? item.duration : val, 'end');
+        });
+        inputEndEl.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') inputEndEl.blur();
+        });
+    }
+
+    // ── Transport / Playback Controls ──
+    if (btnPlay) {
+        btnPlay.addEventListener('click', () => {
+            if (item.wsInstance.isPlaying()) {
+                item.wsInstance.pause();
+                btnPlay.textContent = `▶ ${t('btn_play')}`;
+            } else {
+                const cur = item.wsInstance.getCurrentTime();
+                if (cur < item.start || cur >= item.end) {
+                    const prog = item.duration > 0 ? item.start / item.duration : 0;
+                    item.wsInstance.seekTo(prog);
+                }
+                item.wsInstance.play();
+                btnPlay.textContent = `⏸ ${t('btn_pause')}`;
+            }
+        });
+    }
+
+    if (btnStop) {
+        btnStop.addEventListener('click', () => {
+            item.wsInstance.pause();
+            const prog = item.duration > 0 ? item.start / item.duration : 0;
+            item.wsInstance.seekTo(prog);
+            if (btnPlay) btnPlay.textContent = `▶ ${t('btn_play')}`;
+            if (curTimeSpan) curTimeSpan.textContent = formatTime(item.start);
+        });
+    }
+
+    if (btnSeekBack) {
+        btnSeekBack.addEventListener('click', () => {
+            const cur = item.wsInstance.getCurrentTime();
+            const next = Math.max(0, cur - 1.0);
+            const prog = item.duration > 0 ? next / item.duration : 0;
+            item.wsInstance.seekTo(prog);
+            if (curTimeSpan) curTimeSpan.textContent = formatTime(next);
+        });
+    }
+
+    if (btnSeekFwd) {
+        btnSeekFwd.addEventListener('click', () => {
+            const cur = item.wsInstance.getCurrentTime();
+            const next = Math.min(item.duration, cur + 1.0);
+            const prog = item.duration > 0 ? next / item.duration : 0;
+            item.wsInstance.seekTo(prog);
+            if (curTimeSpan) curTimeSpan.textContent = formatTime(next);
+        });
+    }
+
+    // ── WaveSurfer Ready Event ──
     item.wsInstance.on('ready', () => {
         const dur = item.wsInstance.getDuration();
         item.duration = dur;
 
         let endT = item.end === 0 ? dur : item.end;
         item.end = endT;
+
+        if (totTimeSpan) totTimeSpan.textContent = formatTime(dur);
+        if (inputStartEl) inputStartEl.max = dur;
+        if (inputEndEl) inputEndEl.max = dur;
 
         noUiSlider.create(sliderStartEl, {
             start: [item.start],
@@ -302,34 +579,48 @@ function initWaveSurfer(item) {
             tooltips: false
         });
 
-        valStartSpan.textContent = item.start.toFixed(1) + 's';
-        valEndSpan.textContent = endT.toFixed(1) + 's';
+        sliderStartEl.noUiSlider.on('update', () => {
+            if (isUpdating) return;
+            const val = parseFloat(sliderStartEl.noUiSlider.get());
+            updateTrim('slider_start', val, undefined);
+        });
 
-        sliderStartEl.noUiSlider.on('update', syncRegionFromSliders);
-        sliderEndEl.noUiSlider.on('update', syncRegionFromSliders);
+        sliderEndEl.noUiSlider.on('update', () => {
+            if (isUpdating) return;
+            const val = parseFloat(sliderEndEl.noUiSlider.get());
+            updateTrim('slider_end', undefined, val);
+        });
 
-        syncRegionFromSliders();
-    });
+        updateTrim('init', item.start, endT);
 
-    item.wsInstance.on('audioprocess', (currentTime) => {
-        if (item.wsInstance.isPlaying() && currentTime >= item.end) {
-            item.wsInstance.pause();
+        // Apply saved zoom if any
+        if (item.zoom && item.zoom > 0) {
+            applyZoom(item.zoom);
         }
     });
 
+    item.wsInstance.on('audioprocess', (currentTime) => {
+        if (curTimeSpan) curTimeSpan.textContent = formatTime(currentTime);
+        if (item.wsInstance.isPlaying() && currentTime >= item.end) {
+            item.wsInstance.pause();
+            const prog = item.duration > 0 ? item.start / item.duration : 0;
+            item.wsInstance.seekTo(prog);
+            if (btnPlay) btnPlay.textContent = `▶ ${t('btn_play')}`;
+            if (curTimeSpan) curTimeSpan.textContent = formatTime(item.start);
+        }
+    });
+
+    item.wsInstance.on('interaction', (newTime) => {
+        if (curTimeSpan) curTimeSpan.textContent = formatTime(newTime);
+    });
+
+    item.wsInstance.on('pause', () => {
+        if (btnPlay) btnPlay.textContent = `▶ ${t('btn_play')}`;
+    });
+
     wsRegions.on('region-updated', (region) => {
-        if (updatingFromSlider) return;
-        updatingFromRegion = true;
-
-        item.start = region.start;
-        item.end = region.end;
-
-        sliderStartEl.noUiSlider.set(item.start);
-        sliderEndEl.noUiSlider.set(item.end);
-        valStartSpan.textContent = item.start.toFixed(1) + 's';
-        valEndSpan.textContent = item.end.toFixed(1) + 's';
-
-        updatingFromRegion = false;
+        if (isUpdating) return;
+        updateTrim('region', region.start, region.end);
     });
 
     if (!isMobile) {
@@ -343,23 +634,6 @@ function initWaveSurfer(item) {
             });
         });
     }
-
-    btnPlay.onclick = () => {
-        if (item.wsInstance.isPlaying()) {
-            item.wsInstance.pause();
-            btnPlay.textContent = t('btn_play');
-        } else {
-            const activeRegion = wsRegions.getRegions()[0];
-            if (activeRegion) {
-                activeRegion.play();
-                btnPlay.textContent = t('btn_pause');
-            }
-        }
-    };
-
-    item.wsInstance.on('pause', () => {
-        btnPlay.textContent = t('btn_play');
-    });
 
     const audioUrl = URL.createObjectURL(item.file);
     item.wsInstance.load(audioUrl);
